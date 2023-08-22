@@ -188,3 +188,8 @@ hr{
     font-size: .9rem;
     font-weight: 100;
 }
+
+.container-main>.add-project {
+    margin-top: 1.4rem;
+    margin-right: 1rem;
+}
