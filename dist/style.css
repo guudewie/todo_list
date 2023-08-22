@@ -18,6 +18,19 @@ body {
     grid-template-rows: 80px 8fr;
 }
 
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 600,
+  'GRAD' 0,
+  'opsz' 48
+}
+
+.material-symbols-outlined.plus {
+    font-variation-settings:
+    'wght' 400,
+  }
+
 
 /****************** HEADER ******************/
 
@@ -72,12 +85,12 @@ body {
     gap: 1rem;
 }
 
-.heading {
+.sidebar-heading {
     font-weight: 800;
     font-size: 1.4rem;
 }
 
-.todo,
+.nav-todos,
 #projects {
     display: flex;
     flex-direction: column;
@@ -86,6 +99,30 @@ body {
 
 nav {
     padding-left: .7rem;
+}
+
+section {
+    display: flex;
+    flex-direction: row;
+    gap: 1vw;
+    align-items: center;
+}
+
+.add-project{
+    color: var(--color-text-dark);
+    margin-top: 8px;
+
+    display: flex;
+    flex-direction: row;
+    gap: .5rem;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+
+.add-project>* {
+    font-size: .9rem;
+    cursor: pointer;
 }
 
 

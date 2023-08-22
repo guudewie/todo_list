@@ -6,32 +6,63 @@
     <title>Document</title>
     <script src="main.js" defer></script>
     <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
 <body>
     <div class="header">
-        <div class="header-heading">TO DO APP</div>
         <a class="github-container" href="https://github.com/guudewie">
             <img class="github-icon" src="./assets/github.png" width="30" height="30">
         </a>
+        <div class="header-heading">TO DO APP</div>
     </div>
     <div class="sidebar">
-        <div class="sidebar-container">
-            <div class="heading">To Do's</div>
-            <nav class="todo">
-                <div class="navelement">All</div>
-                <div class="navelement">Today</div>
-                <div class="navelement">Week</div>
+            <nav class="nav-todos">
+                <section>
+                    <span class="material-symbols-outlined">apps</span>
+                    <div class="navelement">All</div>
+                </section>
+                <section>
+                    <span class="material-symbols-outlined">today</span>
+                    <div class="navelement">Today</div>
+                </section>
+                <section>
+                    <span class="material-symbols-outlined">date_range</span>
+                    <div class="navelement">Week</div>
+                </section>
             </nav>
-        </div>
         <div class="sidebar-container">
-            <div class="heading">Projects</div>
+            <div class="sidebar-heading">Projects</div>
             <nav id="projects">
-                <div class="project">Sample Project</div>
-                <div class="project">School</div>
-                <div class="project">Private</div>
+                <section>
+                    <span class="material-symbols-outlined">Toc</span>
+                    <div class="project">Sample Project</div>
+                </section>
+                <section>
+                    <span class="material-symbols-outlined">toc</span>
+                    <div class="project">School</div>
+                </section>
+                <section>
+                    <span class="material-symbols-outlined">toc</span>
+                    <div class="project">Private</div>
+                </section>
             </nav>
+            <div class="add-project">
+                <span class="material-symbols-outlined plus">add</span>
+                <div class="heading-add-project">Add Project</div>
+            </div>
         </div>
     </div>
-    <div id="interface"></div>
+    <div id="interface">
+        <div class="container-main">
+            <div class="heading">Example Heading</div>
+            <div class="sub-heading">Lorem ipsum dolor, sit amet consectetur adipisicing elit.</div>
+            <div class="seperator"></div>
+            <div id="todo-container">
+                <div class="todo"></div>
+            </div>
+
+
+        </div>
+    </div>
 </body>
 </html>
