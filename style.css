@@ -1,7 +1,7 @@
 :root{
     --color-primary: #44504c;
     --color-secondary: #d0d6d7;
-    --color-accent: #657668;
+    --color-accent: #6576686f;
     --color-background: #ffffff;
     --color-text-dark: #030202;
     --color-text-light: #ffffff;
@@ -85,7 +85,7 @@ body {
     gap: 1rem;
 }
 
-.sidebar-heading {
+.heading {
     font-weight: 800;
     font-size: 1.4rem;
 }
@@ -130,7 +130,61 @@ section {
 
 #interface {
     background-color: var(--color-background);
+    padding: 4vw 4vw;
 
     grid-row: 2 / -1;
     grid-column: 2 / -1;
+    display: flex;
+    flex-direction: column;
+}
+
+.container-main>.heading{
+    margin-bottom: 1rem;
+}
+
+.container-main>.sub-heading{
+    margin-bottom: 1rem;
+
+}
+
+hr{
+    border-top: 1.8px solid var(--color-primary);
+}
+
+.sub-heading {
+    font-weight: 300;
+}
+
+/****************** TO DO ******************/
+
+.todo-container {
+    background-color: var(--color-accent);
+    padding: .8rem 1rem;
+    border-radius: .5rem;
+    margin-bottom: .6rem;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.todo-date {
+    margin-right: 3rem;
+}
+
+.todo-icons {
+    margin-left: auto;
+
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+.todo-name {
+    margin-right: 1rem;
+}
+
+.associated-project {
+    font-size: .9rem;
+    font-weight: 100;
 }
