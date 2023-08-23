@@ -11,7 +11,7 @@
 //
 //
 
-export const domStuff = (() => {
+export const domManipulation = (() => {
 
 
 
@@ -20,14 +20,102 @@ export const domStuff = (() => {
         const projectDOM = document.getElementById('projects');
 
         let html = (`<section>
-                    <span class="material-symbols-outlined">Toc</span>
-                    <div class="project">${name}</div>
+                        <span class="material-symbols-outlined">Toc</span>
+                        <div class="project">${name}</div>
                     </section>`)
 
         projectDOM.insertAdjacentHTML("beforeend", html)
     }
 
+    const openProjectForm = () => {
+
+        const projectDOM = document.getElementById('projects');
+
+        let html = (`<section id="project-form-section">
+                        <span class="material-symbols-outlined">toc</span>
+                        <form id="new-project-form">
+                            <input class="project-form-input" type="text">
+                        </form>
+                     </section>`)
+
+        projectDOM.insertAdjacentHTML("beforeend", html)
+    }
+
+    const removeProject = (element) => {
+        element.remove()
+    }
+
     return {
         addProject,
+        removeProject,
+        openProjectForm
+    }
+})();
+
+
+
+
+
+
+/*
+export const formLogic = (() => {
+
+    
+
+    return {
+        closeForm
+    }
+
+})();
+*/
+
+
+
+
+
+
+export const eventListener = (() => {
+
+    let status = true;
+
+    const addProjectListener = () => {
+
+        const toggleStatus = () => status ? false : true;
+        let addProjectElement = document.getElementById("add-project")
+        
+        addProjectElement.addEventListener("click", () => { 
+
+            if (status) { 
+                domManipulation.openProjectForm();
+                handleFormSubmit();
+                status = false;
+            } else return
+        })
+    }
+
+    const handleFormSubmit = () => {
+
+        let formSection = document.getElementById("project-form-section")
+        let form = document.getElementById("new-project-form");
+        let input = document.querySelector(".project-form-input")
+
+        form.addEventListener("submit", (e) => {
+            
+            e.preventDefault();
+            formSection.remove()
+
+            // make "+ Add Project" button available again
+            status = true;
+
+            // add project only if name is not empty
+            if (!input.value) return 
+            else domManipulation.addProject(input.value);
+        })
+    }
+
+
+
+    return {
+        addProjectListener
     }
 })();
