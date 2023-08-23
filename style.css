@@ -108,7 +108,7 @@ section {
     align-items: center;
 }
 
-.add-project{
+#add-project{
     color: var(--color-text-dark);
     margin-top: 8px;
 
@@ -120,9 +120,21 @@ section {
 }
 
 
-.add-project>* {
+#add-project>* {
     font-size: .9rem;
     cursor: pointer;
+}
+
+/****************** FORMS ******************/
+
+.project-form-input {
+    border: none;
+    border-radius: .3rem;
+    padding: .2rem;
+    margin-left: -.2rem;
+    font-size: 1rem;
+    color: var(--color-text-dark);
+    background-color: var(--color-background);
 }
 
 
