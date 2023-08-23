@@ -1,5 +1,5 @@
 import { ToDo } from './todos/todos.js';
-import { Project } from './Projects/projects.js';
+import { Project } from './projects/projects.js';
 import { storage } from './storage/storage.js'
 import { domManipulation, eventListener, formLogic } from './UI/ui.js';
 

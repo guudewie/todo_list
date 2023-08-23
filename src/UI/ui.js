@@ -1,3 +1,6 @@
+import { ToDo } from '../todos/todos.js';
+import { Project } from '../projects/projects.js';
+import { storage } from '../storage/storage.js'
 //   Functionalities
 //   
 //     add project to dom
@@ -76,8 +79,8 @@ export const formLogic = (() => {
 
 export const eventListener = (() => {
 
+    let projects = [];
     let status = true;
-    const toggleStatus = () => status ? false : true;
 
     const addProjectListener = () => {
 
@@ -88,7 +91,7 @@ export const eventListener = (() => {
             if (status) { 
                 domManipulation.openProjectForm();
                 handleFormSubmit();
-                toggleStatus()
+                status = false;
             } else return
         })
     }
@@ -105,11 +108,19 @@ export const eventListener = (() => {
             formSection.remove()
 
             // make "+ Add Project" button available again
-            toggleStatus()
+            status = true;
 
             // add project only if name is not empty
             if (!input.value) return 
             else domManipulation.addProject(input.value);
+
+            // create Project Object and save in localstorage
+
+            let newProject = Project(input.value, "")
+            projects.push(newProject);
+            storage.saveObjectToStorage(input.value, newProject.createProjectObject())
+            console.log(newProject)
+            console.log(projects)
         })
     }
 
