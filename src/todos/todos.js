@@ -14,6 +14,17 @@ export const ToDo = (name, description, dueDate, status) => {
     const getStatus = () => status
     const toggleStatus = () => status = status ? false : true;
 
+    const createToDoObject = () => {
+
+        let toDoObject = {
+            "name" : getName(),
+            "description" : getDescription(),
+            "dueDate" : getDueDate(),
+            "status" : getStatus()
+        }
+
+        return toDoObject
+    }
 
     return {getName,
             setName, 
@@ -21,7 +32,8 @@ export const ToDo = (name, description, dueDate, status) => {
             getDescription,
             getDueDate,
             setDueDate,
-            toogleStatus,
-            toggleStatus}
+            getStatus,
+            toggleStatus,
+            createToDoObject}
 }
 
