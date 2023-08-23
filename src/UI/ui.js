@@ -77,10 +77,10 @@ export const formLogic = (() => {
 export const eventListener = (() => {
 
     let status = true;
+    const toggleStatus = () => status ? false : true;
 
     const addProjectListener = () => {
 
-        const toggleStatus = () => status ? false : true;
         let addProjectElement = document.getElementById("add-project")
         
         addProjectElement.addEventListener("click", () => { 
@@ -88,7 +88,7 @@ export const eventListener = (() => {
             if (status) { 
                 domManipulation.openProjectForm();
                 handleFormSubmit();
-                status = false;
+                toggleStatus()
             } else return
         })
     }
@@ -105,7 +105,7 @@ export const eventListener = (() => {
             formSection.remove()
 
             // make "+ Add Project" button available again
-            status = true;
+            toggleStatus()
 
             // add project only if name is not empty
             if (!input.value) return 
