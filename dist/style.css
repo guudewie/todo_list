@@ -1,3 +1,9 @@
+/*
+* {
+    border: 1px solid red;
+}
+*/
+
 :root{
     --color-primary: #44504c;
     --color-secondary: #d0d6d7;
@@ -165,6 +171,24 @@ hr{
 
 .sub-heading {
     font-weight: 300;
+}
+
+.container.sub-heading-icons {
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+    
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    align-items: end;
+    justify-content: space-between;
+}
+
+.edit-project-icons {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    align-items: end;
 }
 
 /****************** TO DO ******************/
