@@ -51,8 +51,7 @@ export const domManipulation = (() => {
 
     const openEditProjectForm = (projectObject) => {
 
-        const mainDom = document.querySelector(".container-main")
-
+        const titleDescriptionContainer = document.querySelector(".container.title-description")
         const projectTitleDom = document.querySelector(".heading.main")
         const projectDescriptionDom = document.querySelector(".sub-heading.main");
         
@@ -60,17 +59,11 @@ export const domManipulation = (() => {
         projectDescriptionDom.remove()
 
         let html = (`<form id="edit-project-form">
-                        <input class="heading main" placeholder="${projectObject.getName()}" type="text">
-                        <div class="container sub-heading-icons">
-                            <input class="sub-heading main" placeholder="${projectObject.getDescription()}" type="text">
-                            <div class="edit-project-icons">
-                                <span class="material-symbols-outlined project-edit">edit</span>
-                                <span class="material-symbols-outlined project-delete">delete</span>
-                            </div>
-                        </div>
+                        <input class="heading main form" placeholder="${projectObject.getName()}" type="text">
+                        <input class="sub-heading main form" placeholder="${projectObject.getDescription()}" type="text">
                     </form>`)
 
-        mainDom.insertAdjacentHTML("beforebegin", html)
+        titleDescriptionContainer.insertAdjacentHTML("beforebegin", html)
     }
 
     const removeProject = (element) => {
