@@ -35,7 +35,7 @@ export const domManipulation = (() => {
         projectDOM.insertAdjacentHTML("beforeend", html)
     }
 
-    const openProjectForm = () => {
+    const openAddProjectForm = () => {
 
         const projectDOM = document.getElementById('projects');
 
@@ -49,6 +49,12 @@ export const domManipulation = (() => {
         projectDOM.insertAdjacentHTML("beforeend", html)
     }
 
+    const closeAddProjectForm = () => {
+
+        let addProjectFormDom = document.querySelector("section#project-form-section")
+        addProjectFormDom.remove()
+    }
+
     const openEditProjectForm = (projectObject) => {
 
         const titleDescriptionContainer = document.querySelector(".container.title-description")
@@ -59,11 +65,18 @@ export const domManipulation = (() => {
         projectDescriptionDom.remove()
 
         let html = (`<form id="edit-project-form">
-                        <input class="heading main form" placeholder="${projectObject.getName()}" type="text">
-                        <textarea class="sub-heading main form" placeholder="${projectObject.getDescription()}"></textarea>
+                        <input class="heading main form" value="${projectObject.getName()}" type="text">
+                        <input class="sub-heading main form" placeholder="${projectObject.getDescription()}" type="text">
+                        <input type="submit">
                     </form>`)
 
         titleDescriptionContainer.insertAdjacentHTML("beforebegin", html)
+    }
+
+    const closeEditProjectForm = () => {
+
+        let editProjectFormDom = document.querySelector("form#edit-project-form")
+        editProjectFormDom.remove()
     }
 
     const removeProject = (element) => {
@@ -71,7 +84,7 @@ export const domManipulation = (() => {
     }
     
     
-    const addMainLayout = (title, subTitle) => {
+    const populateMainLayout = (title, subTitle) => {
 
         let domTitle = document.querySelector(".heading.main");
         let domSubTitle = document.querySelector(".sub-heading.main");
@@ -79,7 +92,18 @@ export const domManipulation = (() => {
         
         domTitle.textContent = title;
         domSubTitle.textContent = subTitle;
+    }
 
+    const addMainLayout = () => {
+        
+        let mainAnker = document.querySelector("div.container-main")
+        let html = `<div class="container title-description">
+                        <div class="heading main"></div>
+                        <div class="sub-heading main"></div>
+                    </div>`
+        console.log(mainAnker)
+
+        mainAnker.insertAdjacentHTML("afterbegin", html)
     }
 
     const renderToDos = (project) => {
@@ -90,9 +114,12 @@ export const domManipulation = (() => {
     return {
         addProject,
         removeProject,
-        openProjectForm,
+        openAddProjectForm,
+        closeAddProjectForm,
+        populateMainLayout,
         addMainLayout,
-        openEditProjectForm
+        openEditProjectForm,
+        closeEditProjectForm
     }
 })();
 
@@ -121,7 +148,12 @@ export const formLogic = (() => {
 export const eventListener = (() => {
 
     let _projects = [];
+    let _currentProject;
     let _status = true;
+
+    const setStatus = (value) => {
+        _status = value
+    }
 
     const buttonAddProjectListener = () => {
 
@@ -131,9 +163,9 @@ export const eventListener = (() => {
 
             // open form via dom module and set up event listener for submitting the form
             if (_status) { 
-                domManipulation.openProjectForm();
+                domManipulation.openAddProjectForm();
                 handleProjectFormSubmit();
-                _status = false;
+                setStatus(false)
             } else return
         })
     }
@@ -147,35 +179,81 @@ export const eventListener = (() => {
         form.addEventListener("submit", (e) => {
             
             e.preventDefault();
-            formSection.remove()
+            domManipulation.closeAddProjectForm()
 
-            // make "+ Add Project" button available again
-            _status = true;
+            // make any edit button available again
+            setStatus(true)
 
             // add project only if name is not empty
             if (!input.value) return 
             else domManipulation.addProject(input.value, _projects.length + 1);
-            console.log(_projects)
-            console.log(_projects.length+1)
 
             // create Project "Factory" with input value and sample description and save created Object in localstorage and _projects array
             let newProject = Project(input.value, samples.getProjectDescriptionSample())
             _projects.push(newProject);
+            _currentProject = newProject;
             storage.saveObjectToStorage(input.value, newProject.createProjectObject())
 
-            
+            ////////////////////////////////////////////////////////////////////////////////////////
+                console.log(_projects)
+            ////////////////////////////////////////////////////////////////////////////////////////
+
             // add event listener to corresponding navigation item
             let domProject = document.querySelector(`.project${_projects.length}`)
 
+            //populate main layout
+            domManipulation.populateMainLayout(newProject.getName(), newProject.getDescription())
+
             // onclick populate main app section with project name and description
-            domProject.addEventListener("click", () => domManipulation.addMainLayout(newProject.getName(), newProject.getDescription() ))
+            domProject.addEventListener("click", () => domManipulation.populateMainLayout(newProject.getName(), newProject.getDescription() ))
 
             // add event listeners to icons to delete and change a project
             let _projectEditIcon = document.querySelector(".material-symbols-outlined.project-edit")
             let _projectDeleteIcon = document.querySelector(".material-symbols-outlined.project-delete")
 
-            _projectEditIcon.addEventListener("click", () => domManipulation.openEditProjectForm(newProject))
+            _projectEditIcon.addEventListener("click", () => {
+
+                if (_status) { 
+                    domManipulation.openEditProjectForm(_currentProject)
+                    setStatus(false)
+                    handleProjectEditFormSubmit(newProject)
+                } else return
+            })
         })
+    }
+
+    const handleProjectEditFormSubmit = (projectObject) => {
+        
+        console.log(projectObject)
+        console.log(projectObject.getName())
+        let form = document.getElementById("edit-project-form")
+        console.log("sucess")
+        let titleInput = document.querySelector(".heading.main.form")
+        let subTitleInput = document.querySelector(".sub-heading.main.form")
+
+
+
+        // change project information based on form input
+        form.addEventListener("submit", (e) => {
+
+            e.preventDefault()
+
+            // make any edit button available again
+            setStatus(true)
+
+            //close form
+            domManipulation.closeEditProjectForm()
+
+            projectObject.setName(titleInput.value)
+            projectObject.setDescription(subTitleInput.value)
+
+            console.log(projectObject.getName())
+            console.log(projectObject.getDescription())
+
+            domManipulation.addMainLayout()
+            domManipulation.populateMainLayout(titleInput.value, subTitleInput.value)
+        })
+
     }
 
 
