@@ -49,6 +49,30 @@ export const domManipulation = (() => {
         projectDOM.insertAdjacentHTML("beforeend", html)
     }
 
+    const openEditProjectForm = (projectObject) => {
+
+        const mainDom = document.querySelector(".container-main")
+
+        const projectTitleDom = document.querySelector(".heading.main")
+        const projectDescriptionDom = document.querySelector(".sub-heading.main");
+        
+        projectTitleDom.remove()
+        projectDescriptionDom.remove()
+
+        let html = (`<form id="edit-project-form">
+                        <input class="heading main" placeholder="${projectObject.getName()}" type="text">
+                        <div class="container sub-heading-icons">
+                            <input class="sub-heading main" placeholder="${projectObject.getDescription()}" type="text">
+                            <div class="edit-project-icons">
+                                <span class="material-symbols-outlined project-edit">edit</span>
+                                <span class="material-symbols-outlined project-delete">delete</span>
+                            </div>
+                        </div>
+                    </form>`)
+
+        mainDom.insertAdjacentHTML("beforebegin", html)
+    }
+
     const removeProject = (element) => {
         element.remove()
     }
@@ -74,7 +98,8 @@ export const domManipulation = (() => {
         addProject,
         removeProject,
         openProjectForm,
-        addMainLayout
+        addMainLayout,
+        openEditProjectForm
     }
 })();
 
@@ -140,8 +165,8 @@ export const eventListener = (() => {
             console.log(_projects)
             console.log(_projects.length+1)
 
-            // create Project "Factory" and save created Object in localstorage and _projects array
-            let newProject = Project(input.value, "")
+            // create Project "Factory" with input value and sample description and save created Object in localstorage and _projects array
+            let newProject = Project(input.value, samples.getProjectDescriptionSample())
             _projects.push(newProject);
             storage.saveObjectToStorage(input.value, newProject.createProjectObject())
 
@@ -149,8 +174,14 @@ export const eventListener = (() => {
             // add event listener to corresponding navigation item
             let domProject = document.querySelector(`.project${_projects.length}`)
 
-            //onclick populate main app section with project name and a sample description
-            domProject.addEventListener("click", () => domManipulation.addMainLayout(newProject.getName(), samples.getProjectDescriptionSample() ))
+            // onclick populate main app section with project name and description
+            domProject.addEventListener("click", () => domManipulation.addMainLayout(newProject.getName(), newProject.getDescription() ))
+
+            // add event listeners to icons to delete and change a project
+            let _projectEditIcon = document.querySelector(".material-symbols-outlined.project-edit")
+            let _projectDeleteIcon = document.querySelector(".material-symbols-outlined.project-delete")
+
+            _projectEditIcon.addEventListener("click", () => domManipulation.openEditProjectForm(newProject))
         })
     }
 
