@@ -165,6 +165,15 @@ textarea.sub-heading.main.form {
     padding: .3rem;
 }
 
+input[type="submit"] {
+    height: 0px;
+    width: 0px;
+    border: none;
+    background-color: none;
+    opacity: 0;
+    margin: -.5rem;
+}
+
 /****************** INTERFACE ******************/
 
 #interface {
