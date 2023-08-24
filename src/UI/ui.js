@@ -2,6 +2,7 @@ import { ToDo } from '../todos/todos.js';
 import { Project } from '../projects/projects.js';
 import { storage } from '../storage/storage.js'
 import { samples } from './samples.js';
+import { projectObjectStorage } from '../projects/project_storage.js';
 //   Functionalities
 //   
 //     add project to dom
@@ -23,11 +24,11 @@ export const domManipulation = (() => {
 
 
 
-    const addProject = (name, identifier) => {
+    const addProject = (name) => {
 
         const projectDOM = document.getElementById('projects');
 
-        let html = (`<section class="project${identifier}">
+        let html = (`<section class="project">
                         <span class="material-symbols-outlined">Toc</span>
                         <div class="project">${name}</div>
                     </section>`)
@@ -186,26 +187,26 @@ export const eventListener = (() => {
 
             // add project only if name is not empty
             if (!input.value) return 
-            else domManipulation.addProject(input.value, _projects.length + 1);
+            else domManipulation.addProject(input.value);
 
             // create Project "Factory" with input value and sample description and save created Object in localstorage and _projects array
             let newProject = Project(input.value, samples.getProjectDescriptionSample())
-            _projects.push(newProject);
-            _currentProject = newProject;
+            projectObjectStorage.addProjectObject(newProject.getName(), newProject);
+
+            projectObjectStorage.setCurrentProject(newProject)
+
             storage.saveObjectToStorage(input.value, newProject.createProjectObject())
 
-            ////////////////////////////////////////////////////////////////////////////////////////
-                console.log(_projects)
-            ////////////////////////////////////////////////////////////////////////////////////////
-
             // add event listener to corresponding navigation item
-            let domProject = document.querySelector(`.project${_projects.length}`)
-
-            //populate main layout
+            let domProject = document.querySelector(`section.project:last-child`)
+            
+            domProject.addEventListener("click", () => {
+                domManipulation.populateMainLayout(newProject.getName(), newProject.getDescription())
+                projectObjectStorage.setCurrentProject(newProject)
+            })
+            
             domManipulation.populateMainLayout(newProject.getName(), newProject.getDescription())
 
-            // onclick populate main app section with project name and description
-            domProject.addEventListener("click", () => domManipulation.populateMainLayout(newProject.getName(), newProject.getDescription() ))
 
             // add event listeners to icons to delete and change a project
             let _projectEditIcon = document.querySelector(".material-symbols-outlined.project-edit")
@@ -214,9 +215,9 @@ export const eventListener = (() => {
             _projectEditIcon.addEventListener("click", () => {
 
                 if (_status) { 
-                    domManipulation.openEditProjectForm(_currentProject)
+                    domManipulation.openEditProjectForm(projectObjectStorage.getCurrentProject())
                     setStatus(false)
-                    handleProjectEditFormSubmit(newProject)
+                    handleProjectEditFormSubmit(projectObjectStorage.getCurrentProject())
                 } else return
             })
         })
