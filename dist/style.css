@@ -1,8 +1,7 @@
-/*
 * {
     border: 1px solid red;
 }
-*/
+
 
 
 :root{
@@ -220,6 +219,17 @@ hr {
     flex-direction: column;
 }
 
+.add-to-do {
+
+    padding-right: 1rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: .5rem;
+
+
+}
 
 
 /****************** TO DO ******************/
