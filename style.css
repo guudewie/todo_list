@@ -12,6 +12,8 @@
     --color-background: #ffffff;
     --color-text-dark: #030202;
     --color-text-light: #ffffff;
+
+    --font-roboto: 'Roboto', sans-serif;
 }
 
 body {
@@ -144,6 +146,24 @@ section {
     background-color: var(--color-background);
 }
 
+#edit-project-form{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 1rem;
+    flex: 1;
+}
+
+input.heading.main.form {
+    width: fit-content;
+    padding:  .3rem;
+}
+
+textarea.sub-heading.main.form {
+    height: 2rem;
+    font-family: var(--font-roboto);
+    padding: .3rem;
+}
 
 /****************** INTERFACE ******************/
 
@@ -177,6 +197,7 @@ hr {
     display: flex;
     align-items: end;
     gap: 1rem;
+    justify-content: space-between;
 }
 
 .edit-project-icons {
