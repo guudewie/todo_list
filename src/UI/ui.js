@@ -60,7 +60,7 @@ export const domManipulation = (() => {
 
         let html = (`<form id="edit-project-form">
                         <input class="heading main form" placeholder="${projectObject.getName()}" type="text">
-                        <input class="sub-heading main form" placeholder="${projectObject.getDescription()}" type="text">
+                        <textarea class="sub-heading main form" placeholder="${projectObject.getDescription()}"></textarea>
                     </form>`)
 
         titleDescriptionContainer.insertAdjacentHTML("beforebegin", html)
