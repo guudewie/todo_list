@@ -4,6 +4,7 @@ import { storage } from './storage/storage.js'
 import { domManipulation, eventListener, formLogic } from './UI/ui.js';
 
 eventListener.buttonAddProjectListener()
+eventListener.buttonAddToDoListener()
 
 
 

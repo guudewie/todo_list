@@ -74,6 +74,33 @@ export const domManipulation = (() => {
         titleDescriptionContainer.insertAdjacentHTML("beforebegin", html)
     }
 
+    const openAddToDoForm = () => {
+
+        let mainAnker = document.querySelector("section.todo-main");
+
+        let html = `<div class="todo-container" id="add-todo-form-container">
+                        <form id="add-todo-form">
+                            <input type="text" class="todo-name">
+                            <div class="associated-project"></div>
+                            <div class="todo-icons">
+                                <input type="date" class="todo-date">
+                                <span class="material-symbols-outlined todo">check_box_outline_blank</span>
+                                <span class="material-symbols-outlined todo">edit</span>
+                                <span class="material-symbols-outlined todo">delete</span>
+                            </div>
+                            <input type="submit">
+                        </form>
+                    </div>`
+        
+        mainAnker.insertAdjacentHTML("beforeend", html)
+    }
+
+    const closeAddToDoForm = () => {
+
+        let addTodoFormDom = document.getElementById("add-todo-form-container")
+        addTodoFormDom.remove()
+    }
+
     const closeEditProjectForm = () => {
 
         let editProjectFormDom = document.querySelector("form#edit-project-form")
@@ -102,13 +129,60 @@ export const domManipulation = (() => {
                         <div class="heading main"></div>
                         <div class="sub-heading main"></div>
                     </div>`
-        console.log(mainAnker)
 
         mainAnker.insertAdjacentHTML("afterbegin", html)
     }
 
     const renderToDos = (project) => {
 
+        let toDoArray = project.getAllToDos();
+
+        toDoArray.forEach(toDo => {
+            
+            let mainAnker = document.querySelector("section.todo-main")
+
+            let toDoName = toDo.getName();
+            let toDoDate = toDo.getDueDate();
+            let toDoCheck = toDo.getStatus();
+            let checkIcon = toDoCheck ? "check_box" : "check_box_outline_blank"
+
+            let html = `<div class="todo-container">
+                        <div class="todo-name">${toDoName}</div>
+                        <div class="associated-project"></div>
+                        <div class="todo-icons">
+                            <div class="todo-date">${toDoDate}</div>
+                            <span class="material-symbols-outlined todo">${checkIcon}</span>
+                            <span class="material-symbols-outlined todo">edit</span>
+                            <span class="material-symbols-outlined todo">delete</span>
+                        </div>
+                    </div>`
+
+            mainAnker.insertAdjacentHTML("beforeend", html)
+            
+        });
+    }
+
+    const renderOneToDo = (toDo) => {
+        
+        let mainAnker = document.querySelector("section.todo-main")
+
+        let toDoName = toDo.getName();
+        let toDoDate = toDo.getDueDate();
+        let toDoCheck = toDo.getStatus();
+        let checkIcon = toDoCheck ? "check_box" : "check_box_outline_blank"
+
+        let html = `<div class="todo-container">
+                    <div class="todo-name">${toDoName}</div>
+                    <div class="associated-project"></div>
+                    <div class="todo-icons">
+                        <div class="todo-date">${toDoDate}</div>
+                        <span class="material-symbols-outlined todo">${checkIcon}</span>
+                        <span class="material-symbols-outlined todo">edit</span>
+                        <span class="material-symbols-outlined todo">delete</span>
+                    </div>
+                </div>`
+
+        mainAnker.insertAdjacentHTML("beforeend", html)
     }
 
 
@@ -120,7 +194,11 @@ export const domManipulation = (() => {
         populateMainLayout,
         addMainLayout,
         openEditProjectForm,
-        closeEditProjectForm
+        openAddToDoForm,
+        closeAddToDoForm,
+        closeEditProjectForm,
+        renderToDos,
+        renderOneToDo
     }
 })();
 
@@ -179,19 +257,49 @@ export const eventListener = (() => {
 
             // open form via dom module and set up event listener for submitting the form
             if (_status) { 
-             //   domManipulation.OPENADDTODOFORM();
-             //   HANDLETODOFORMSUBMIT();
-             //   setStatus(false)
+                domManipulation.openAddToDoForm();
+                handleToDoFormSubmit();
+                setStatus(false);
             } else return
         })
 
     }
 
+    const handleToDoFormSubmit = () => {
+
+        let form = document.getElementById("add-todo-form-container");
+        let todoName = document.querySelector("input.todo-name");
+        let todoDate = document.querySelector("input.todo-date");
+
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            domManipulation.closeAddToDoForm();
+
+            console.log(todoName.value)
+            console.log(todoDate.value)
+
+            // create ToDo object
+            let newToDo = ToDo(todoName.value, "", todoDate.value, false);
+            
+            // safe todo in assosiated project
+            projectObjectStorage.getCurrentProject().addToDo(newToDo)
+
+            // Make any button available again
+            setStatus(true)
+
+            // RENDER TODOS
+            //   - Add event listeners to buttons
+            domManipulation.renderOneToDo(newToDo)
+
+        })
+    }
+
+
+
     const handleProjectFormSubmit = () => {
 
-        let formSection = document.getElementById("project-form-section")
         let form = document.getElementById("new-project-form");
-        let input = document.querySelector(".project-form-input")
+        let input = document.querySelector(".project-form-input");
 
         form.addEventListener("submit", (e) => {
             
@@ -221,12 +329,14 @@ export const eventListener = (() => {
                 projectObjectStorage.setCurrentProject(newProject)
             })
             
+            //poulate main section with corresponding project information
             domManipulation.populateMainLayout(newProject.getName(), newProject.getDescription())
 
 
             // add event listeners to icons to delete and change a project
             let _projectEditIcon = document.querySelector(".material-symbols-outlined.project-edit")
             let _projectDeleteIcon = document.querySelector(".material-symbols-outlined.project-delete")
+
 
             _projectEditIcon.addEventListener("click", () => {
 
@@ -276,6 +386,7 @@ export const eventListener = (() => {
 
 
     return {
-        buttonAddProjectListener
+        buttonAddProjectListener,
+        buttonAddToDoListener
     }
 })();
