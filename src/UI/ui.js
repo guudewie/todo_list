@@ -185,6 +185,16 @@ export const domManipulation = (() => {
         mainAnker.insertAdjacentHTML("beforeend", html)
     }
 
+    const removeToDos = () => {
+
+        let toDosDom = document.querySelectorAll(".todo-container")
+
+        toDosDom.forEach((element) => {
+            element.remove()
+        })
+    }
+
+
 
     return {
         addProject,
@@ -198,7 +208,8 @@ export const domManipulation = (() => {
         closeAddToDoForm,
         closeEditProjectForm,
         renderToDos,
-        renderOneToDo
+        renderOneToDo,
+        removeToDos
     }
 })();
 
@@ -327,6 +338,8 @@ export const eventListener = (() => {
             domProject.addEventListener("click", () => {
                 domManipulation.populateMainLayout(newProject.getName(), newProject.getDescription())
                 projectObjectStorage.setCurrentProject(newProject)
+                domManipulation.removeToDos()
+                domManipulation.renderToDos(newProject)
             })
             
             //poulate main section with corresponding project information
