@@ -270,3 +270,7 @@ hr {
     margin-top: 1.4rem;
     margin-right: 1rem;
 }
+
+.strikethrough {
+    text-decoration:line-through;
+}

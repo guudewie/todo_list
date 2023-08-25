@@ -138,27 +138,7 @@ export const domManipulation = (() => {
         let toDoArray = project.getAllToDos();
 
         toDoArray.forEach(toDo => {
-            
-            let mainAnker = document.querySelector("section.todo-main")
-
-            let toDoName = toDo.getName();
-            let toDoDate = toDo.getDueDate();
-            let toDoCheck = toDo.getStatus();
-            let checkIcon = toDoCheck ? "check_box" : "check_box_outline_blank"
-
-            let html = `<div class="todo-container">
-                        <div class="todo-name">${toDoName}</div>
-                        <div class="associated-project"></div>
-                        <div class="todo-icons">
-                            <div class="todo-date">${toDoDate}</div>
-                            <span class="material-symbols-outlined todo">${checkIcon}</span>
-                            <span class="material-symbols-outlined todo">edit</span>
-                            <span class="material-symbols-outlined todo">delete</span>
-                        </div>
-                    </div>`
-
-            mainAnker.insertAdjacentHTML("beforeend", html)
-            
+            renderOneToDo(toDo)
         });
     }
 
@@ -176,13 +156,18 @@ export const domManipulation = (() => {
                     <div class="associated-project"></div>
                     <div class="todo-icons">
                         <div class="todo-date">${toDoDate}</div>
-                        <span class="material-symbols-outlined todo">${checkIcon}</span>
-                        <span class="material-symbols-outlined todo">edit</span>
-                        <span class="material-symbols-outlined todo">delete</span>
+                        <span class="material-symbols-outlined todo check">${checkIcon}</span>
+                        <span class="material-symbols-outlined todo edit">edit</span>
+                        <span class="material-symbols-outlined todo delete">delete</span>
                     </div>
                 </div>`
 
         mainAnker.insertAdjacentHTML("beforeend", html)
+
+        //add event listener
+        let latestToDo = document.querySelector(".todo-container:last-child")
+        eventListener.toDoListener(latestToDo, toDo)
+
     }
 
     const removeToDos = () => {
@@ -218,17 +203,8 @@ export const domManipulation = (() => {
 
 
 
-/*
-export const formLogic = (() => {
 
-    
 
-    return {
-        closeForm
-    }
-
-})();
-*/
 
 
 
@@ -286,25 +262,42 @@ export const eventListener = (() => {
             e.preventDefault();
             domManipulation.closeAddToDoForm();
 
-            console.log(todoName.value)
-            console.log(todoDate.value)
-
             // create ToDo object
             let newToDo = ToDo(todoName.value, "", todoDate.value, false);
             
-            // safe todo in assosiated project
+            // add todo to assosiated project
             projectObjectStorage.getCurrentProject().addToDo(newToDo)
 
             // Make any button available again
             setStatus(true)
-
-            // RENDER TODOS
-            //   - Add event listeners to buttons
             domManipulation.renderOneToDo(newToDo)
 
+
+            //// Add Event Listeners to Add/Check/and delete ToDos
         })
     }
 
+    const toDoListener = (element, todo) => {
+
+        let checkIcon = element.querySelector(".todo.check");
+        let editIcon = element.querySelector(".todo.check");
+        let deleteIcon = element.querySelector(".todo.check");
+        let toDoNameElement = element.querySelector(".todo-name")
+
+        checkIcon.addEventListener("click", () => {
+            
+            todo.toggleStatus()
+            
+            if (todo.getStatus() === true) {
+                checkIcon.textContent = "check_box"
+                toDoNameElement.classList.add("strikethrough")
+            } else {
+                checkIcon.textContent = "check_box_outline_blank"
+                toDoNameElement.classList.remove("strikethrough")
+            }
+
+        })
+    }
 
 
     const handleProjectFormSubmit = () => {
@@ -400,6 +393,7 @@ export const eventListener = (() => {
 
     return {
         buttonAddProjectListener,
-        buttonAddToDoListener
+        buttonAddToDoListener,
+        toDoListener
     }
 })();
