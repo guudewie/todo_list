@@ -101,6 +101,64 @@ export const domManipulation = (() => {
         addTodoFormDom.remove()
     }
 
+    //this function replaces the respective parts in the todo container with html to create a form without deleting the nodes
+    const openEditToDoForm = (respectiveToDoElement, toDoObject) => {
+
+        let html = `<div class="todo-container" id="edit-todo-form-container">
+                        <form id="edit-todo-form">
+                            <input type="text" class="todo-name" value="${toDoObject.getName()}">
+                            <div class="associated-project"></div>
+                            <div class="todo-icons">
+                                <input type="date" class="todo-date" value="${toDoObject.getDueDate()}">
+                                <span class="material-symbols-outlined todo">check_box_outline_blank</span>
+                                <span class="material-symbols-outlined todo">edit</span>
+                                <span class="material-symbols-outlined todo">delete</span>
+                            </div>
+                            <input type="submit">
+                        </form>
+                    </div>`
+
+
+        respectiveToDoElement.insertAdjacentHTML("afterend", html)
+
+        respectiveToDoElement.remove()
+
+        //remove name and date elements
+
+
+        
+    }
+
+    const closeEditToDoForm = (toDoObject) => {
+
+        let formContainer = document.getElementById("edit-todo-form-container")
+        let checkIcon = toDoObject.getStatus() ? "check_box" : "check_box_outline_blank"
+
+        let html = `<div class="todo-container">
+                        <div class="todo-name">${toDoObject.getName()}</div>
+                        <div class="associated-project"></div>
+                        <div class="todo-icons">
+                            <div class="todo-date">${toDoObject.getDueDate()}</div>
+                            <span class="material-symbols-outlined todo check">${checkIcon}</span>
+                            <span class="material-symbols-outlined todo edit">edit</span>
+                            <span class="material-symbols-outlined todo delete">delete</span>
+                        </div>
+                    </div>`
+
+        // insert todo card
+        formContainer.insertAdjacentHTML("afterend", html)
+    
+        // add event listener
+
+        let todoContainer = document.querySelector("#edit-todo-form-container+.todo-container")
+        eventListener.toDoListener(todoContainer, toDoObject)
+
+        // close form
+        formContainer.remove()
+
+
+    }
+
     const closeEditProjectForm = () => {
 
         let editProjectFormDom = document.querySelector("form#edit-project-form")
@@ -152,15 +210,15 @@ export const domManipulation = (() => {
         let checkIcon = toDoCheck ? "check_box" : "check_box_outline_blank"
 
         let html = `<div class="todo-container">
-                    <div class="todo-name">${toDoName}</div>
-                    <div class="associated-project"></div>
-                    <div class="todo-icons">
-                        <div class="todo-date">${toDoDate}</div>
-                        <span class="material-symbols-outlined todo check">${checkIcon}</span>
-                        <span class="material-symbols-outlined todo edit">edit</span>
-                        <span class="material-symbols-outlined todo delete">delete</span>
-                    </div>
-                </div>`
+                        <div class="todo-name">${toDoName}</div>
+                        <div class="associated-project"></div>
+                        <div class="todo-icons">
+                            <div class="todo-date">${toDoDate}</div>
+                            <span class="material-symbols-outlined todo check">${checkIcon}</span>
+                            <span class="material-symbols-outlined todo edit">edit</span>
+                            <span class="material-symbols-outlined todo delete">delete</span>
+                        </div>
+                    </div>`
 
         mainAnker.insertAdjacentHTML("beforeend", html)
 
@@ -194,7 +252,9 @@ export const domManipulation = (() => {
         closeEditProjectForm,
         renderToDos,
         renderOneToDo,
-        removeToDos
+        removeToDos,
+        openEditToDoForm,
+        closeEditToDoForm
     }
 })();
 
@@ -213,8 +273,6 @@ export const domManipulation = (() => {
 
 export const eventListener = (() => {
 
-    let _projects = [];
-    let _currentProject;
     let _status = true;
 
     const setStatus = (value) => {
@@ -266,23 +324,23 @@ export const eventListener = (() => {
             let newToDo = ToDo(todoName.value, "", todoDate.value, false);
             
             // add todo to assosiated project
-            projectObjectStorage.getCurrentProject().addToDo(newToDo)
+            let project = projectObjectStorage.getCurrentProject()
+            project.addToDo(newToDo, newToDo.getName())
 
             // Make any button available again
             setStatus(true)
             domManipulation.renderOneToDo(newToDo)
 
-
-            //// Add Event Listeners to Add/Check/and delete ToDos
         })
     }
 
     const toDoListener = (element, todo) => {
 
         let checkIcon = element.querySelector(".todo.check");
-        let editIcon = element.querySelector(".todo.check");
-        let deleteIcon = element.querySelector(".todo.check");
+        let editIcon = element.querySelector(".todo.edit");
+        let deleteIcon = element.querySelector(".todo.delete");
         let toDoNameElement = element.querySelector(".todo-name")
+        let toDoDateElement = element.querySelector(".todo-date")
 
         checkIcon.addEventListener("click", () => {
             
@@ -296,6 +354,27 @@ export const eventListener = (() => {
                 toDoNameElement.classList.remove("strikethrough")
             }
 
+        })
+
+        editIcon.addEventListener("click", () => {
+
+            if (_status) {
+                setStatus(false);
+                domManipulation.openEditToDoForm(element, todo);
+                _handleEditToDoFormSubmit(todo)
+            } else return
+        })
+
+        deleteIcon.addEventListener("click", () => {
+
+            // remove todo from user interface
+            deleteIcon.parentElement.parentElement.remove()
+
+            let project = projectObjectStorage.getCurrentProject()
+
+            project.removeToDo(todo.getName())
+
+            console.table(project.getAllToDos())
         })
     }
 
@@ -356,15 +435,10 @@ export const eventListener = (() => {
     }
 
     const handleProjectEditFormSubmit = (projectObject) => {
-        
-        console.log(projectObject)
-        console.log(projectObject.getName())
+
         let form = document.getElementById("edit-project-form")
-        console.log("sucess")
         let titleInput = document.querySelector(".heading.main.form")
         let subTitleInput = document.querySelector(".sub-heading.main.form")
-
-
 
         // change project information based on form input
         form.addEventListener("submit", (e) => {
@@ -380,13 +454,32 @@ export const eventListener = (() => {
             projectObject.setName(titleInput.value)
             projectObject.setDescription(subTitleInput.value)
 
-            console.log(projectObject.getName())
-            console.log(projectObject.getDescription())
-
             domManipulation.addMainLayout()
             domManipulation.populateMainLayout(titleInput.value, subTitleInput.value)
         })
 
+    }
+
+    const _handleEditToDoFormSubmit = (toDoObject) => {
+        
+        let form = document.getElementById("edit-todo-form")
+        let nameInput = form.querySelector("input.todo-name")
+        let dateInput = form.querySelector("input.todo-date")
+
+        form.addEventListener("submit", (e) => {
+            
+            e.preventDefault()
+
+            // make any edit button available again
+            setStatus(true)
+
+            // change form details
+            toDoObject.setName(nameInput.value)
+            toDoObject.setDueDate(dateInput.value)
+
+            // close form
+            domManipulation.closeEditToDoForm(toDoObject)
+        })
     }
 
 

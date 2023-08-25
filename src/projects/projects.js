@@ -8,21 +8,27 @@ export const Project = (name, description) => {
     const getDescription = () => description;
     const setDescription = (newDescription) => description = newDescription;
 
-    let _associatedToDos = [];
+    let _associatedToDos = {};
 
     const getToDo = (index) => _associatedToDos[index];
     const getAllToDos = () => _associatedToDos;
 
-    const addToDo = (object) => _associatedToDos.push(object)
-    const removeToDo = (index) => _associatedToDos.splice(index, 1)
+    const addToDo = (object, toDoName) => _associatedToDos[toDoName] = object
+    const removeToDo = (todoName) => delete _associatedToDos[todoName];
 
     const _createToDosObject = () => {
 
         let ToDosObject = {}
 
-        _associatedToDos.forEach((e) => {
-            ToDosObject[e.getName()] = e.createToDoObject()
-        })
+        for (let todo in _associatedToDos) {
+
+        }
+        // IMPLEMENT ABOVE LOOP IF NEEDED
+        // BELOW LOOP DOES NOT WORK
+
+        //_associatedToDos.forEach((e) => {
+        //    ToDosObject[e.getName()] = e.createToDoObject()
+        //})
 
         return ToDosObject
     }
