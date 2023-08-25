@@ -195,9 +195,11 @@ export const domManipulation = (() => {
 
         let toDoArray = project.getAllToDos();
 
-        toDoArray.forEach(toDo => {
-            renderOneToDo(toDo)
-        });
+        
+
+        for (let key in toDoArray) {
+            renderOneToDo(toDoArray[key])
+        }
     }
 
     const renderOneToDo = (toDo) => {
@@ -440,7 +442,8 @@ export const eventListener = (() => {
                     //domManipulation.removeProject(domProject)
                     projectObjectStorage.getCurrentProject().getProjectDomElement().remove()
                     
-                    console.table(projectObjectStorage.getCurrentProject())
+                    // JUMP TO ALL PAGE
+
 
                 } else return
             })
