@@ -4,11 +4,11 @@ export const projectObjectStorage = (() => {
     let _currentProject;
 
     const getProjectObject = (title) => {
-        return _projectObjectStorage.title
+        return _projectObjectStorage[title]
     }
 
     const addProjectObject = (key, value) => {
-        _projectObjectStorage.key = value
+        _projectObjectStorage[key] = value
     }
 
     const getCurrentProject = () => {
@@ -19,10 +19,15 @@ export const projectObjectStorage = (() => {
         _currentProject = object
     }
 
+    const removeProjectObject = (key) => {
+        delete _projectObjectStorage[key]
+    }
+
     return {
         getProjectObject,
         addProjectObject,
         getCurrentProject,
-        setCurrentProject
+        setCurrentProject,
+        removeProjectObject
     }
 })();

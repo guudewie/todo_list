@@ -401,11 +401,11 @@ export const eventListener = (() => {
             projectObjectStorage.addProjectObject(newProject.getName(), newProject);
 
             projectObjectStorage.setCurrentProject(newProject)
-
             storage.saveObjectToStorage(input.value, newProject.createProjectObject())
 
             // add event listener to corresponding navigation item
             let domProject = document.querySelector(`section.project:last-child`)
+            newProject.setProjectDomElement(domProject)
             
             domProject.addEventListener("click", () => {
                 domManipulation.populateMainLayout(newProject.getName(), newProject.getDescription())
@@ -419,11 +419,11 @@ export const eventListener = (() => {
 
 
             // add event listeners to icons to delete and change a project
-            let _projectEditIcon = document.querySelector(".material-symbols-outlined.project-edit")
-            let _projectDeleteIcon = document.querySelector(".material-symbols-outlined.project-delete")
+            let projectEditIcon = document.querySelector(".material-symbols-outlined.project-edit")
+            let projectDeleteIcon = document.querySelector(".material-symbols-outlined.project-delete")
 
 
-            _projectEditIcon.addEventListener("click", () => {
+            projectEditIcon.addEventListener("click", () => {
 
                 if (_status) { 
                     domManipulation.openEditProjectForm(projectObjectStorage.getCurrentProject())
@@ -431,6 +431,20 @@ export const eventListener = (() => {
                     handleProjectEditFormSubmit(projectObjectStorage.getCurrentProject())
                 } else return
             })
+
+            projectDeleteIcon.addEventListener("click", () => {
+                if (_status) {
+                    // remove project object from storage
+                    projectObjectStorage.removeProjectObject(projectObjectStorage.getCurrentProject().getName())
+                    
+                    //domManipulation.removeProject(domProject)
+                    projectObjectStorage.getCurrentProject().getProjectDomElement().remove()
+                    
+                    console.table(projectObjectStorage.getCurrentProject())
+
+                } else return
+            })
+
         })
     }
 

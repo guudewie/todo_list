@@ -13,6 +13,11 @@ export const Project = (name, description) => {
     const getToDo = (index) => _associatedToDos[index];
     const getAllToDos = () => _associatedToDos;
 
+    let _projectDomElement;
+
+    const setProjectDomElement = (newDomElement) => _projectDomElement = newDomElement;
+    const getProjectDomElement = () =>{ return _projectDomElement }
+
     const addToDo = (object, toDoName) => _associatedToDos[toDoName] = object
     const removeToDo = (todoName) => delete _associatedToDos[todoName];
 
@@ -54,6 +59,8 @@ export const Project = (name, description) => {
             removeToDo,
             getAllToDos,
             createProjectObject,
+            setProjectDomElement,
+            getProjectDomElement
         }
 }
 
