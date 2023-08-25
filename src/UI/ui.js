@@ -171,6 +171,22 @@ export const eventListener = (() => {
         })
     }
 
+    const buttonAddToDoListener = () => {
+
+        let addToDoElement = document.getElementById("add-to-do")
+        
+        addToDoElement.addEventListener("click", () => { 
+
+            // open form via dom module and set up event listener for submitting the form
+            if (_status) { 
+             //   domManipulation.OPENADDTODOFORM();
+             //   HANDLETODOFORMSUBMIT();
+             //   setStatus(false)
+            } else return
+        })
+
+    }
+
     const handleProjectFormSubmit = () => {
 
         let formSection = document.getElementById("project-form-section")
