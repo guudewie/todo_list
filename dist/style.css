@@ -137,14 +137,21 @@ section {
 
 #today-nav,
 #week-nav,
-#all-nav {
-    padding: .3rem;
+#all-nav,
+section.project {
+    padding: .3rem 1rem;
 }
 
+#today-nav:hover,
+#week-nav:hover,
+#all-nav:hover,
+section.project:hover,
 .nav-active {
     background-color: var(--color-text-light);
     border-radius: .5rem;
+    margin-right: -10rem;
 }
+
 
 /****************** FORMS ******************/
 
