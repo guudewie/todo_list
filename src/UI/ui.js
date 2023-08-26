@@ -408,6 +408,23 @@ export const eventListener = (() => {
         })
     }
 
+    const _validateProjectForm = () => {
+        
+        let form = document.getElementById("new-project-form");
+        let projectName = form.querySelector(".project-form-input")
+        let projects = projectObjectStorage.getProjectObjectArray()
+        let project = projectName.value
+        let boolean = true;
+    
+        if (!projects) boolean = true;
+
+        let projectNames = Object.keys(projects)
+        
+        if (projectNames.includes(project)) boolean = false;
+
+        return boolean
+    }
+
 
     const handleProjectFormSubmit = () => {
 
@@ -415,9 +432,24 @@ export const eventListener = (() => {
         let input = document.querySelector(".project-form-input");
 
         form.addEventListener("submit", (e) => {
-            
             e.preventDefault();
+
+            if (!_validateProjectForm()) {
+                alert("Please change the name of your project!")
+                return
+            }
+
+            _setUpProjectPage()
+            
+        })
+
+        //form.addEventListener("submit", (e) => {
+          
+        const _setUpProjectPage = () => {
+            //e.preventDefault();
+
             domManipulation.closeAddProjectForm()
+
 
             // make any edit button available again
             setStatus(true)
@@ -437,7 +469,7 @@ export const eventListener = (() => {
             let domProject = document.querySelector(`section.project:last-child`)
             newProject.setProjectDomElement(domProject)
 
-            _toggleNavItemsStyling(domProject)
+            _toggleNavItemsStyling(domProject) // highlight project in navigation
             
             domProject.addEventListener("click", () => {
                 domManipulation.populateMainLayout(newProject.getName(), newProject.getDescription())
@@ -478,8 +510,8 @@ export const eventListener = (() => {
 
                 } else return
             })
-
-        })
+        }
+     //   })
     }
 
     const handleProjectEditFormSubmit = (projectObject) => {
