@@ -7,6 +7,10 @@ export const projectObjectStorage = (() => {
         return _projectObjectStorage[title]
     }
 
+    const getProjectObjectArray = () => {
+        return _projectObjectStorage
+    }
+
     const addProjectObject = (key, value) => {
         _projectObjectStorage[key] = value
     }
@@ -25,6 +29,7 @@ export const projectObjectStorage = (() => {
 
     return {
         getProjectObject,
+        getProjectObjectArray,
         addProjectObject,
         getCurrentProject,
         setCurrentProject,

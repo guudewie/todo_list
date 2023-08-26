@@ -12,10 +12,7 @@ export const ToDo = (name, description, dueDate, status) => {
     const setDueDate = (newDueDate) => dueDate = newDueDate; 
 
     const getStatus = () => status
-    const toggleStatus = () => {
-        status = status ? false : true;
-        return status
-    }
+    const toggleStatus = () => status = status ? false : true;
 
     const createToDoObject = () => {
 

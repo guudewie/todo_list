@@ -3,22 +3,8 @@ import { Project } from '../projects/projects.js';
 import { storage } from '../storage/storage.js'
 import { samples } from './samples.js';
 import { projectObjectStorage } from '../projects/project_storage.js';
-//   Functionalities
-//   
-//     add project to dom
-//     add todo to dom
-//
-//     remove project from dom
-//     remove todo from dom
-//     
-//     change interface based on navigation
-//     change highlighting of navigation items
-//
-//
-//      ToDo: 
-//              - write functions render Layout & render ToDos
-//              - project array/object in seperate logic
-//
+import { format, nextSunday, subDays, isWithinInterval, parseISO} from 'date-fns';
+
 
 export const domManipulation = (() => {
 
@@ -195,8 +181,6 @@ export const domManipulation = (() => {
 
         let toDoArray = project.getAllToDos();
 
-        
-
         for (let key in toDoArray) {
             renderOneToDo(toDoArray[key])
         }
@@ -239,6 +223,40 @@ export const domManipulation = (() => {
         })
     }
 
+    const openNavPage = (page) => {
+
+        let containerMain = document.querySelector(".container-main");
+        let interfaceAnker = document.getElementById("interface");
+
+        let heading;
+        let subHeading;
+
+        switch (page) {
+            case "all":
+                heading = samples.allToDosHeading
+                subHeading = samples.allToDosSubHeading;
+                break;
+            case "today":
+                heading = samples.todayToDosHeading
+                subHeading = samples.todayToDosHeading;
+                break;
+            case "week":
+                heading = samples.weekToDosHeading
+                subHeading = samples.weekToDosSubHeading; 
+        }
+
+        let html = `<div class="container-main">
+                        <div class="container title-description">
+                            <div class="heading main">${heading}</div>
+                            <div class="sub-heading main">${subHeading}</div>
+                        </div>
+                    </div>`
+        
+        containerMain.remove()
+        interfaceAnker.insertAdjacentHTML("afterbegin", html)
+
+    }
+
 
 
     return {
@@ -256,7 +274,8 @@ export const domManipulation = (() => {
         renderOneToDo,
         removeToDos,
         openEditToDoForm,
-        closeEditToDoForm
+        closeEditToDoForm,
+        openNavPage
     }
 })();
 
@@ -279,6 +298,14 @@ export const eventListener = (() => {
 
     const setStatus = (value) => {
         _status = value
+    }
+
+    const loadPage = () => {
+        buttonAddProjectListener()
+        _allPageListener()
+        _todayPageListener()
+        buttonAddToDoListener()
+        _weekPageListener()
     }
 
     const buttonAddProjectListener = () => {
@@ -499,11 +526,98 @@ export const eventListener = (() => {
         })
     }
 
+    const _allPageListener = () => {
+
+        let allPageButton = document.getElementById("all-nav")
+
+        allPageButton.addEventListener("click", () => {
+            domManipulation.openNavPage("all")
+            domManipulation.removeToDos(projectObjectStorage.getCurrentProject())
+
+            let projects = projectObjectStorage.getProjectObjectArray()
+
+            for (let project in projects) {
+                domManipulation.renderToDos(projects[project])
+            }
+        })
+
+    }
+
+    const _todayPageListener = () => {
+
+        let todayPageButton = document.getElementById("today-nav")
+
+        todayPageButton.addEventListener("click", () => {
+            domManipulation.openNavPage("today")
+            domManipulation.removeToDos(projectObjectStorage.getCurrentProject())
+
+            let projects = projectObjectStorage.getProjectObjectArray()
+
+            // filter for todays todos
+            for (let project in projects) {
+                
+                let toDos = projects[project].getAllToDos();
+                for (let todo in toDos) {
+
+                    let todaysDate = _getFormattedDate(new Date())
+                    let toDosDate = toDos[todo].getDueDate()        
+
+                    if (todaysDate == toDosDate) {
+                        domManipulation.renderOneToDo(toDos[todo])
+                    }
+                }
+            }
+        })
+    }
+
+    const _weekPageListener = () => {
+
+        let weekPageButton = document.getElementById("week-nav")
+
+        weekPageButton.addEventListener("click", () => {
+            domManipulation.openNavPage("week")
+            domManipulation.removeToDos(projectObjectStorage.getCurrentProject())
+
+            let projects = projectObjectStorage.getProjectObjectArray()
+
+            // filter for weekly todos
+            for (let project in projects) {
+                
+                let toDos = projects[project].getAllToDos();
+                for (let todo in toDos) {
+
+                    let toDosDate = toDos[todo].getDueDate()
+
+                    if (_isWithinCurrentWeek(toDosDate)) {
+                        domManipulation.renderOneToDo(toDos[todo])
+                    }
+                }
+            }
+        })
+    }
+
+    const _getFormattedDate = (date) => {
+        return format(date, 'yyyy-MM-dd')
+    }
+
+    const _isWithinCurrentWeek = (date) => {
+
+        let weekEnd = nextSunday(new Date())
+        let weekStart = subDays(weekEnd, 6)
+        let week = {
+            start: weekStart,
+            end: weekEnd
+        }
+
+        return isWithinInterval(parseISO(date), week)
+    }
+
 
 
     return {
         buttonAddProjectListener,
         buttonAddToDoListener,
-        toDoListener
+        toDoListener,
+        loadPage
     }
 })();

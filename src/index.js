@@ -3,8 +3,7 @@ import { Project } from './projects/projects.js';
 import { storage } from './storage/storage.js'
 import { domManipulation, eventListener, formLogic } from './UI/ui.js';
 
-eventListener.buttonAddProjectListener()
-eventListener.buttonAddToDoListener()
+window.addEventListener("load", () => eventListener.loadPage())
 
 
 
