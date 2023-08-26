@@ -301,14 +301,15 @@ export const eventListener = (() => {
     }
 
     const loadPage = () => {
-        buttonAddProjectListener()
+
+        _buttonAddProjectListener()
         _allPageListener()
         _todayPageListener()
-        buttonAddToDoListener()
+        _buttonAddToDoListener()
         _weekPageListener()
     }
 
-    const buttonAddProjectListener = () => {
+    const _buttonAddProjectListener = () => {
 
         let addProjectElement = document.getElementById("add-project")
         
@@ -323,7 +324,7 @@ export const eventListener = (() => {
         })
     }
 
-    const buttonAddToDoListener = () => {
+    const _buttonAddToDoListener = () => {
 
         let addToDoElement = document.getElementById("add-to-do")
         
@@ -435,12 +436,15 @@ export const eventListener = (() => {
             // add event listener to corresponding navigation item
             let domProject = document.querySelector(`section.project:last-child`)
             newProject.setProjectDomElement(domProject)
+
+            _toggleNavItemsStyling(domProject)
             
             domProject.addEventListener("click", () => {
                 domManipulation.populateMainLayout(newProject.getName(), newProject.getDescription())
                 projectObjectStorage.setCurrentProject(newProject)
                 domManipulation.removeToDos()
                 domManipulation.renderToDos(newProject)
+                _toggleNavItemsStyling(domProject)
             })
             
             //poulate main section with corresponding project information
@@ -531,6 +535,9 @@ export const eventListener = (() => {
         let allPageButton = document.getElementById("all-nav")
 
         allPageButton.addEventListener("click", () => {
+
+            _toggleNavItemsStyling(allPageButton)
+
             domManipulation.openNavPage("all")
             domManipulation.removeToDos(projectObjectStorage.getCurrentProject())
 
@@ -548,6 +555,9 @@ export const eventListener = (() => {
         let todayPageButton = document.getElementById("today-nav")
 
         todayPageButton.addEventListener("click", () => {
+
+            _toggleNavItemsStyling(todayPageButton)
+
             domManipulation.openNavPage("today")
             domManipulation.removeToDos(projectObjectStorage.getCurrentProject())
 
@@ -575,6 +585,9 @@ export const eventListener = (() => {
         let weekPageButton = document.getElementById("week-nav")
 
         weekPageButton.addEventListener("click", () => {
+
+            _toggleNavItemsStyling(weekPageButton)
+
             domManipulation.openNavPage("week")
             domManipulation.removeToDos(projectObjectStorage.getCurrentProject())
 
@@ -612,11 +625,33 @@ export const eventListener = (() => {
         return isWithinInterval(parseISO(date), week)
     }
 
+    const _toggleNavItemsStyling = (clickedElement) => {
+
+        //array with all navigation elements
+        let navElements = [];
+
+        let allNavItem = document.querySelector("#all-nav");
+        navElements.push(allNavItem)
+        let todayNavItem = document.querySelector("#today-nav");
+        navElements.push(todayNavItem)
+        let weekNavItem = document.querySelector("#week-nav");
+        navElements.push(weekNavItem)
+
+        let projects = projectObjectStorage.getProjectObjectArray()
+
+        for (let project in projects) {
+            navElements.push(projects[project].getProjectDomElement())
+        }
+
+        navElements.forEach(element => {
+            element.classList.remove("nav-active")
+        });
+
+        clickedElement.classList.add("nav-active")
+    }
 
 
     return {
-        buttonAddProjectListener,
-        buttonAddToDoListener,
         toDoListener,
         loadPage
     }

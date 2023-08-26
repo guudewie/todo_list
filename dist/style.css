@@ -135,6 +135,17 @@ section {
     cursor: pointer;
 }
 
+#today-nav,
+#week-nav,
+#all-nav {
+    padding: .3rem;
+}
+
+.nav-active {
+    background-color: var(--color-text-light);
+    border-radius: .5rem;
+}
+
 /****************** FORMS ******************/
 
 .project-form-input {
