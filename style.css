@@ -260,6 +260,11 @@ hr {
     cursor: pointer;
 }
 
+.hidden {
+    cursor: default;
+    opacity: 0;
+}
+
 
 /****************** TO DO ******************/
 
