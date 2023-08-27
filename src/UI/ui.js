@@ -218,8 +218,8 @@ export const domManipulation = (() => {
 
     const openNavPage = (page) => {
 
-        let containerMain = document.querySelector(".container-main");
-        let interfaceAnker = document.getElementById("interface");
+        let projectEditIcon = document.querySelector(".material-symbols-outlined.project-edit")
+        let projectDeleteIcon = document.querySelector(".material-symbols-outlined.project-delete")
 
         let heading;
         let subHeading;
@@ -237,16 +237,21 @@ export const domManipulation = (() => {
                 heading = samples.weekToDosHeading
                 subHeading = samples.weekToDosSubHeading(); 
         }
-
-        let html = `<div class="container-main">
-                        <div class="container title-description">
-                            <div class="heading main">${heading}</div>
-                            <div class="sub-heading main">${subHeading}</div>
-                        </div>
-                    </div>`
         
-        containerMain.remove()
-        interfaceAnker.insertAdjacentHTML("afterbegin", html)
+        populateMainLayout(heading, subHeading)
+        
+        // remove event listeners from project edit icons
+        let editIconClone = projectEditIcon.cloneNode(true)
+        projectEditIcon.parentNode.replaceChild(editIconClone, projectEditIcon)
+
+        let deleteIconClone = projectDeleteIcon.cloneNode(true)
+        projectDeleteIcon.parentNode.replaceChild(deleteIconClone, projectDeleteIcon)
+
+        editIconClone.classList.add("hidden")
+        deleteIconClone.classList.add("hidden")
+
+        //containerMain.remove()
+        //interfaceAnker.insertAdjacentHTML("afterbegin", html)
 
     }
 
@@ -471,17 +476,23 @@ export const eventListener = (() => {
                 domManipulation.removeToDos()
                 domManipulation.renderToDos(newProject)
                 _toggleNavItemsStyling(domProject)
+
+                let projectEditIcon = document.querySelector(".material-symbols-outlined.project-edit")
+                let projectDeleteIcon = document.querySelector(".material-symbols-outlined.project-delete")
+
+                // make icons available if hidden
+                projectEditIcon.classList.remove("hidden")
+                projectDeleteIcon.classList.remove("hidden")
             })
             
             //poulate main section with corresponding project information
             domManipulation.populateMainLayout(newProject.getName(), newProject.getDescription())
 
-
             // add event listeners to icons to delete and change a project
             let projectEditIcon = document.querySelector(".material-symbols-outlined.project-edit")
             let projectDeleteIcon = document.querySelector(".material-symbols-outlined.project-delete")
 
-
+            
             projectEditIcon.addEventListener("click", () => {
 
                 if (_status) { 
