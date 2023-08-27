@@ -184,7 +184,7 @@ export const domManipulation = (() => {
         let mainAnker = document.querySelector("section.todo-main")
 
         let toDoName = toDo.getName();
-        let toDoDate = format(parseISO(toDo.getDueDate()), 'dd/MM/yyyy');
+        let toDoDate = toDo.getDueDate() ? format(parseISO(toDo.getDueDate()), 'dd/MM/yyyy') : "";
         let toDoCheck = toDo.getStatus();
         let checkIcon = toDoCheck ? "check_box" : "check_box_outline_blank"
 
@@ -249,10 +249,6 @@ export const domManipulation = (() => {
 
         editIconClone.classList.add("hidden")
         deleteIconClone.classList.add("hidden")
-
-        //containerMain.remove()
-        //interfaceAnker.insertAdjacentHTML("afterbegin", html)
-
     }
 
 
@@ -483,6 +479,9 @@ export const eventListener = (() => {
                 // make icons available if hidden
                 projectEditIcon.classList.remove("hidden")
                 projectDeleteIcon.classList.remove("hidden")
+
+                projectEditIcon.addEventListener("click", () => _handleProjectEdit())
+                projectDeleteIcon.addEventListener("click", () => _handleProjectDelete())
             })
             
             //poulate main section with corresponding project information
@@ -492,34 +491,33 @@ export const eventListener = (() => {
             let projectEditIcon = document.querySelector(".material-symbols-outlined.project-edit")
             let projectDeleteIcon = document.querySelector(".material-symbols-outlined.project-delete")
 
-            
-            projectEditIcon.addEventListener("click", () => {
-
-                if (_status) { 
-                    domManipulation.openEditProjectForm(projectObjectStorage.getCurrentProject())
-                    setStatus(false)
-                    handleProjectEditFormSubmit(projectObjectStorage.getCurrentProject())
-                } else return
-            })
-
-            projectDeleteIcon.addEventListener("click", () => {
-                if (_status) {
-                    // remove project object from storage
-                    projectObjectStorage.removeProjectObject(projectObjectStorage.getCurrentProject().getName())
-                    
-                    // remove project navigation element
-                    projectObjectStorage.getCurrentProject().getProjectDomElement().remove()
-
-                    // update local storage
-                    projectObjectStorage.updateLocalStorage()
-                    
-                    // JUMP TO ALL PAGE
-
-
-                } else return
-            })
+            projectEditIcon.addEventListener("click", () => _handleProjectEdit())
+            projectDeleteIcon.addEventListener("click", () => _handleProjectDelete())
         }
     }
+
+    const _handleProjectEdit = () => {
+        if (_status) { 
+            domManipulation.openEditProjectForm(projectObjectStorage.getCurrentProject())
+            setStatus(false)
+            handleProjectEditFormSubmit(projectObjectStorage.getCurrentProject())
+        } else return
+    }
+
+    const _handleProjectDelete = () => {
+        if (_status) {
+            // remove project object from storage
+            projectObjectStorage.removeProjectObject(projectObjectStorage.getCurrentProject().getName())
+            
+            // remove project navigation element
+            projectObjectStorage.getCurrentProject().getProjectDomElement().remove()
+
+            // update local storage
+            projectObjectStorage.updateLocalStorage()
+
+        } else return
+    }
+
 
     const handleProjectEditFormSubmit = (projectObject) => {
 
