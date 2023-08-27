@@ -118,12 +118,13 @@ export const domManipulation = (() => {
 
         let formContainer = document.getElementById("edit-todo-form-container")
         let checkIcon = toDoObject.getStatus() ? "check_box" : "check_box_outline_blank"
+        let formattedDate = format(parseISO(toDoObject.getDueDate()), 'dd/MM/yyyy')
 
         let html = `<div class="todo-container">
                         <div class="todo-name">${toDoObject.getName()}</div>
                         <div class="associated-project"></div>
                         <div class="todo-icons">
-                            <div class="todo-date">${toDoObject.getDueDate()}</div>
+                            <div class="todo-date">${formattedDate}</div>
                             <span class="material-symbols-outlined todo check">${checkIcon}</span>
                             <span class="material-symbols-outlined todo edit">edit</span>
                             <span class="material-symbols-outlined todo delete">delete</span>
@@ -190,7 +191,7 @@ export const domManipulation = (() => {
         let mainAnker = document.querySelector("section.todo-main")
 
         let toDoName = toDo.getName();
-        let toDoDate = toDo.getDueDate();
+        let toDoDate = format(parseISO(toDo.getDueDate()), 'dd/MM/yyyy');
         let toDoCheck = toDo.getStatus();
         let checkIcon = toDoCheck ? "check_box" : "check_box_outline_blank"
 
