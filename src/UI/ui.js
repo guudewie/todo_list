@@ -235,7 +235,7 @@ export const domManipulation = (() => {
                 break;
             case "week":
                 heading = samples.weekToDosHeading
-                subHeading = samples.weekToDosSubHeading; 
+                subHeading = samples.weekToDosSubHeading(); 
         }
 
         let html = `<div class="container-main">
@@ -496,7 +496,7 @@ export const eventListener = (() => {
                     // remove project object from storage
                     projectObjectStorage.removeProjectObject(projectObjectStorage.getCurrentProject().getName())
                     
-                    //domManipulation.removeProject(domProject)
+                    // remove project navigation element
                     projectObjectStorage.getCurrentProject().getProjectDomElement().remove()
 
                     // update local storage
@@ -508,7 +508,6 @@ export const eventListener = (() => {
                 } else return
             })
         }
-     //   })
     }
 
     const handleProjectEditFormSubmit = (projectObject) => {

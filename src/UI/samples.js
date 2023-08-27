@@ -13,7 +13,15 @@ export const samples = (() => {
     }
 
     let weekToDosHeading = "Weekly To Dos"
-    let weekToDosSubHeading = "Rough Week you got!!"
+    let weekToDosSubHeading = () => {
+
+        let weekEnd = nextSunday(new Date())
+        let weekStart = subDays(weekEnd, 6)
+        let weekStartString = format(weekStart, "'You´re weekly Todo´s from' EEEEEE'. the' do 'to'")
+        let weekEndString = format(weekEnd, " EEEEEE. 'the' do")
+        
+        return weekStartString + weekEndString
+    }   
 
 
     const getProjectDescriptionSample = () => {
