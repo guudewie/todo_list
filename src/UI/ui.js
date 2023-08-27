@@ -8,7 +8,6 @@ import { format, nextSunday, subDays, isWithinInterval, parseISO} from 'date-fns
 export const domManipulation = (() => {
 
 
-
     const addProject = (name) => {
 
         const projectDOM = document.getElementById('projects');
@@ -105,13 +104,7 @@ export const domManipulation = (() => {
 
 
         respectiveToDoElement.insertAdjacentHTML("afterend", html)
-
         respectiveToDoElement.remove()
-
-        //remove name and date elements
-
-
-        
     }
 
     const closeEditToDoForm = (toDoObject) => {
@@ -238,7 +231,7 @@ export const domManipulation = (() => {
                 break;
             case "today":
                 heading = samples.todayToDosHeading
-                subHeading = samples.todayToDosHeading;
+                subHeading = samples.todayToDosSubHeading();
                 break;
             case "week":
                 heading = samples.weekToDosHeading
