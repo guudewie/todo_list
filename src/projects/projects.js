@@ -26,7 +26,7 @@ export const Project = (name, description) => {
         let ToDosObject = {}
 
         for (let todo in _associatedToDos) {
-
+            ToDosObject[_associatedToDos[todo].getName()] = _associatedToDos[todo].createToDoObject()
         }
         // IMPLEMENT ABOVE LOOP IF NEEDED
         // BELOW LOOP DOES NOT WORK

@@ -1,6 +1,5 @@
 import { ToDo } from '../todos/todos.js';
 import { Project } from '../projects/projects.js';
-import { storage } from '../storage/storage.js'
 import { samples } from './samples.js';
 import { projectObjectStorage } from '../projects/project_storage.js';
 import { format, nextSunday, subDays, isWithinInterval, parseISO} from 'date-fns';
@@ -357,6 +356,9 @@ export const eventListener = (() => {
             let project = projectObjectStorage.getCurrentProject()
             project.addToDo(newToDo, newToDo.getName())
 
+            //update local storage
+            projectObjectStorage.updateLocalStorage()
+
             // Make any button available again
             setStatus(true)
             domManipulation.renderOneToDo(newToDo)
@@ -404,7 +406,8 @@ export const eventListener = (() => {
 
             project.removeToDo(todo.getName())
 
-            console.table(project.getAllToDos())
+            //update local storage
+            projectObjectStorage.updateLocalStorage()
         })
     }
 
@@ -435,7 +438,7 @@ export const eventListener = (() => {
             e.preventDefault();
 
             if (!_validateProjectForm()) {
-                alert("Please change the name of your project!")
+                alert("Please don't use duplicate names!")
                 return
             }
 
@@ -443,13 +446,11 @@ export const eventListener = (() => {
             
         })
 
-        //form.addEventListener("submit", (e) => {
           
         const _setUpProjectPage = () => {
-            //e.preventDefault();
 
             domManipulation.closeAddProjectForm()
-
+            domManipulation.removeToDos()
 
             // make any edit button available again
             setStatus(true)
@@ -461,9 +462,8 @@ export const eventListener = (() => {
             // create Project "Factory" with input value and sample description and save created Object in localstorage and _projects array
             let newProject = Project(input.value, samples.getProjectDescriptionSample())
             projectObjectStorage.addProjectObject(newProject.getName(), newProject);
-
             projectObjectStorage.setCurrentProject(newProject)
-            storage.saveObjectToStorage(input.value, newProject.createProjectObject())
+            projectObjectStorage.updateLocalStorage()
 
             // add event listener to corresponding navigation item
             let domProject = document.querySelector(`section.project:last-child`)
@@ -504,6 +504,9 @@ export const eventListener = (() => {
                     
                     //domManipulation.removeProject(domProject)
                     projectObjectStorage.getCurrentProject().getProjectDomElement().remove()
+
+                    // update local storage
+                    projectObjectStorage.updateLocalStorage()
                     
                     // JUMP TO ALL PAGE
 
@@ -534,6 +537,9 @@ export const eventListener = (() => {
             projectObject.setName(titleInput.value)
             projectObject.setDescription(subTitleInput.value)
 
+            //update local storage
+            projectObjectStorage.updateLocalStorage()
+
             domManipulation.addMainLayout()
             domManipulation.populateMainLayout(titleInput.value, subTitleInput.value)
         })
@@ -556,6 +562,9 @@ export const eventListener = (() => {
             // change form details
             toDoObject.setName(nameInput.value)
             toDoObject.setDueDate(dateInput.value)
+
+            // update local storage
+            projectObjectStorage.updateLocalStorage()
 
             // close form
             domManipulation.closeEditToDoForm(toDoObject)

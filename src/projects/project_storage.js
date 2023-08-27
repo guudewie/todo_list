@@ -13,6 +13,11 @@ export const projectObjectStorage = (() => {
 
     const addProjectObject = (key, value) => {
         _projectObjectStorage[key] = value
+        // UPDATE LOCAL STORAGE
+    }
+
+    function removeProjectObject(key) {
+        delete _projectObjectStorage[key];
     }
 
     const getCurrentProject = () => {
@@ -23,8 +28,20 @@ export const projectObjectStorage = (() => {
         _currentProject = object
     }
 
-    const removeProjectObject = (key) => {
-        delete _projectObjectStorage[key]
+    const updateLocalStorage = () => {
+
+        localStorage.clear()
+
+        for (let key in _projectObjectStorage) {
+
+            let project = _projectObjectStorage[key].createProjectObject()
+
+            window.localStorage.setItem(_projectObjectStorage[key].getName(), JSON.stringify(project))
+        }
+    }
+
+    const getObjectFromStorage = (key) => {
+        return JSON.parse(localStorage.getItem(key))
     }
 
     return {
@@ -33,6 +50,7 @@ export const projectObjectStorage = (() => {
         addProjectObject,
         getCurrentProject,
         setCurrentProject,
-        removeProjectObject
+        removeProjectObject,
+        updateLocalStorage
     }
 })();
