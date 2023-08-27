@@ -111,7 +111,7 @@ export const domManipulation = (() => {
 
         let formContainer = document.getElementById("edit-todo-form-container")
         let checkIcon = toDoObject.getStatus() ? "check_box" : "check_box_outline_blank"
-        let formattedDate = format(parseISO(toDoObject.getDueDate()), 'dd/MM/yyyy')
+        let formattedDate = toDoObject.getDueDate() ? format(parseISO(toDoObject.getDueDate()), 'dd/MM/yyyy') : "";
 
         let html = `<div class="todo-container">
                         <div class="todo-name">${toDoObject.getName()}</div>
