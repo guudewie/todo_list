@@ -296,7 +296,7 @@ export const eventListener = (() => {
 
     const loadPage = () => {
 
-        _handlePageLoad()
+        _checkForLocalStorage()
 
         _buttonAddProjectListener()
         _allPageListener()
@@ -304,12 +304,38 @@ export const eventListener = (() => {
         _weekPageListener()
     }
 
-    const _handlePageLoad = () => {
+    const _checkForLocalStorage = () => {
 
         console.log(localStorage.length)
         
         if (localStorage.length == 0) return console.log("storage empty")
-        else return console.log("storage full")
+        else return _setUpLocalStorageItems()
+    }
+
+    const _setUpLocalStorageItems = () => {
+
+        for (var i = 0; i < localStorage.length; i++){
+
+            let storageProject = JSON.parse(localStorage.getItem(localStorage.key(i)));
+            let storageProjectToDos = storageProject.associatedToDos
+
+            console.table(storageProject)
+            console.table(storageProjectToDos)
+
+            let newProject = Project(storageProject.name, storageProject.description);
+
+            for (let key in storageProjectToDos) {
+                let newToDo = ToDo(storageProjectToDos[key].name,
+                                    storageProjectToDos[key].description,
+                                    storageProjectToDos[key].dueDate,
+                                    storageProjectToDos[key].status)
+                newProject.addToDo(newToDo, newToDo.getName())
+            }
+
+            projectObjectStorage.addProjectObject(newProject.getName(), newProject)
+
+            console.table(projectObjectStorage.getProjectObjectArray())
+        }
     }
 
     const _buttonAddProjectListener = () => {
