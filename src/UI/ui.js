@@ -220,6 +220,7 @@ export const domManipulation = (() => {
 
         let projectEditIcon = document.querySelector(".material-symbols-outlined.project-edit")
         let projectDeleteIcon = document.querySelector(".material-symbols-outlined.project-delete")
+        let todoAddIcon = document.querySelector("div#add-to-do");
 
         let heading;
         let subHeading;
@@ -247,6 +248,10 @@ export const domManipulation = (() => {
         let deleteIconClone = projectDeleteIcon.cloneNode(true)
         projectDeleteIcon.parentNode.replaceChild(deleteIconClone, projectDeleteIcon)
 
+        let addIconClone = todoAddIcon.cloneNode(true)
+        todoAddIcon.parentNode.replaceChild(addIconClone, todoAddIcon)
+
+        addIconClone.classList.add("hidden")
         editIconClone.classList.add("hidden")
         deleteIconClone.classList.add("hidden")
     }
@@ -362,13 +367,18 @@ export const eventListener = (() => {
 
         let projectEditIcon = document.querySelector(".material-symbols-outlined.project-edit")
         let projectDeleteIcon = document.querySelector(".material-symbols-outlined.project-delete")
+        let todoAddIcon = document.querySelector("div#add-to-do");
 
         // make icons available if hidden
         projectEditIcon.classList.remove("hidden")
         projectDeleteIcon.classList.remove("hidden")
+        todoAddIcon.classList.remove("hidden")
 
+
+        
         projectEditIcon.addEventListener("click", () => _handleProjectEdit())
         projectDeleteIcon.addEventListener("click", () => _handleProjectDelete())
+        todoAddIcon.addEventListener("click", () => _buttonAddToDoListener())
     }
 
     const _loopLocalStorage = () => {
@@ -479,8 +489,8 @@ export const eventListener = (() => {
             // remove todo from user interface
             deleteIcon.parentElement.parentElement.remove()
 
+            // remove todo from object storage
             let project = projectObjectStorage.getCurrentProject()
-
             project.removeToDo(todo.getName())
 
             //update local storage
@@ -579,13 +589,16 @@ export const eventListener = (() => {
 
                 let projectEditIcon = document.querySelector(".material-symbols-outlined.project-edit")
                 let projectDeleteIcon = document.querySelector(".material-symbols-outlined.project-delete")
+                let addTodoIcon = document.querySelector("div#add-to-do")
 
                 // make icons available if hidden
                 projectEditIcon.classList.remove("hidden")
                 projectDeleteIcon.classList.remove("hidden")
+                addTodoIcon.classList.remove("hidden")
 
                 projectEditIcon.addEventListener("click", () => _handleProjectEdit())
                 projectDeleteIcon.addEventListener("click", () => _handleProjectDelete())
+                todoAddIcon.addEventListener("click", () => _buttonAddToDoListener())
             })
             
             //poulate main section with corresponding project information
@@ -698,7 +711,6 @@ export const eventListener = (() => {
                 domManipulation.renderToDos(projects[project])
             }
         })
-
     }
 
     const _todayPageListener = () => {
