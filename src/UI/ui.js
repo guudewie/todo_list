@@ -314,16 +314,17 @@ export const eventListener = (() => {
 
     const _setUpLocalStorageItems = () => {
 
+        // loop through objects in local storage and create project objects
         for (var i = 0; i < localStorage.length; i++){
 
             let storageProject = JSON.parse(localStorage.getItem(localStorage.key(i)));
             let storageProjectToDos = storageProject.associatedToDos
 
             console.table(storageProject)
-            console.table(storageProjectToDos)
 
             let newProject = Project(storageProject.name, storageProject.description);
 
+            // loop through todo objects in local storage, create todo object and link to associated project object
             for (let key in storageProjectToDos) {
                 let newToDo = ToDo(storageProjectToDos[key].name,
                                     storageProjectToDos[key].description,
@@ -332,10 +333,36 @@ export const eventListener = (() => {
                 newProject.addToDo(newToDo, newToDo.getName())
             }
 
+            // save created object and update local storage
             projectObjectStorage.addProjectObject(newProject.getName(), newProject)
+            projectObjectStorage.setCurrentProject(newProject)
+            projectObjectStorage.updateLocalStorage()
 
-            console.table(projectObjectStorage.getProjectObjectArray())
-        }
+            domManipulation.addProject(newProject.getName());
+            let domProject = document.querySelector(`section.project:last-child`)
+            newProject.setProjectDomElement(domProject)
+
+            // activate button to add to dos
+            _buttonAddToDoListener()
+
+            domProject.addEventListener("click", () => {
+                domManipulation.populateMainLayout(newProject.getName(), newProject.getDescription())
+                projectObjectStorage.setCurrentProject(newProject)
+                domManipulation.removeToDos()
+                domManipulation.renderToDos(newProject)
+                _toggleNavItemsStyling(domProject)
+
+                let projectEditIcon = document.querySelector(".material-symbols-outlined.project-edit")
+                let projectDeleteIcon = document.querySelector(".material-symbols-outlined.project-delete")
+
+                // make icons available if hidden
+                projectEditIcon.classList.remove("hidden")
+                projectDeleteIcon.classList.remove("hidden")
+
+                projectEditIcon.addEventListener("click", () => _handleProjectEdit())
+                projectDeleteIcon.addEventListener("click", () => _handleProjectDelete())
+            })
+        }        
     }
 
     const _buttonAddProjectListener = () => {
@@ -470,10 +497,7 @@ export const eventListener = (() => {
             if (!_validateProjectForm()) {
                 alert("Please don't use duplicate names!")
                 return
-            }
-
-            _setUpProjectPage()
-            
+            } else _setUpProjectPage()  
         })
 
           
