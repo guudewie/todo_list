@@ -309,10 +309,41 @@ export const eventListener = (() => {
         console.log(localStorage.length)
         
         if (localStorage.length == 0) return console.log("storage empty")
-        else return _setUpLocalStorageItems()
+        else return _loopLocalStorage()
     }
 
-    const _setUpLocalStorageItems = () => {
+    const _setUpProject = (newProject) => {
+        // save created object and update local storage
+        projectObjectStorage.addProjectObject(newProject.getName(), newProject)
+        projectObjectStorage.setCurrentProject(newProject)
+
+        domManipulation.addProject(newProject.getName());
+        let domProject = document.querySelector(`section.project:last-child`)
+        newProject.setProjectDomElement(domProject)
+
+        // activate button to add to dos
+        _buttonAddToDoListener()
+
+        domProject.addEventListener("click", () => {
+            domManipulation.populateMainLayout(newProject.getName(), newProject.getDescription())
+            projectObjectStorage.setCurrentProject(newProject)
+            domManipulation.removeToDos()
+            domManipulation.renderToDos(newProject)
+            _toggleNavItemsStyling(domProject)
+
+            let projectEditIcon = document.querySelector(".material-symbols-outlined.project-edit")
+            let projectDeleteIcon = document.querySelector(".material-symbols-outlined.project-delete")
+
+            // make icons available if hidden
+            projectEditIcon.classList.remove("hidden")
+            projectDeleteIcon.classList.remove("hidden")
+
+            projectEditIcon.addEventListener("click", () => _handleProjectEdit())
+            projectDeleteIcon.addEventListener("click", () => _handleProjectDelete())
+        })
+    }
+
+    const _loopLocalStorage = () => {
 
         // loop through objects in local storage and create project objects
         for (var i = 0; i < localStorage.length; i++){
@@ -333,35 +364,7 @@ export const eventListener = (() => {
                 newProject.addToDo(newToDo, newToDo.getName())
             }
 
-            // save created object and update local storage
-            projectObjectStorage.addProjectObject(newProject.getName(), newProject)
-            projectObjectStorage.setCurrentProject(newProject)
-            projectObjectStorage.updateLocalStorage()
-
-            domManipulation.addProject(newProject.getName());
-            let domProject = document.querySelector(`section.project:last-child`)
-            newProject.setProjectDomElement(domProject)
-
-            // activate button to add to dos
-            _buttonAddToDoListener()
-
-            domProject.addEventListener("click", () => {
-                domManipulation.populateMainLayout(newProject.getName(), newProject.getDescription())
-                projectObjectStorage.setCurrentProject(newProject)
-                domManipulation.removeToDos()
-                domManipulation.renderToDos(newProject)
-                _toggleNavItemsStyling(domProject)
-
-                let projectEditIcon = document.querySelector(".material-symbols-outlined.project-edit")
-                let projectDeleteIcon = document.querySelector(".material-symbols-outlined.project-delete")
-
-                // make icons available if hidden
-                projectEditIcon.classList.remove("hidden")
-                projectDeleteIcon.classList.remove("hidden")
-
-                projectEditIcon.addEventListener("click", () => _handleProjectEdit())
-                projectDeleteIcon.addEventListener("click", () => _handleProjectDelete())
-            })
+            _setUpProject(newProject)
         }        
     }
 

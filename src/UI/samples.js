@@ -1,4 +1,5 @@
 import { format, nextSunday, subDays, isWithinInterval, parseISO} from 'date-fns';
+import { ToDo } from '../todos/todos';
 
 export const samples = (() => {
 
@@ -21,7 +22,26 @@ export const samples = (() => {
         let weekEndString = format(weekEnd, " EEEEEE. 'the' do")
         
         return weekStartString + weekEndString
-    }   
+    }
+
+    const getSampleProject = () => {
+
+        let heading = "Welcome";
+        let description = "May I present TA DAAAA: The To Do App of your dreams!!!";
+        let todoDate = new Date();
+        let toDo1 = ToDo("💡 Click + Add Project to personalize your project portfolio");
+        let toDo2 = ToDo("💡 Set up to dos for each project with the add to do button");
+        let toDo3 = ToDo("💡 Give your ToDos names and dates");
+        let toDo4 = ToDo("💡 Ohh Ohh, seems like this one is due today", "", todoDate);
+        let toDo5 = ToDo("💡 Check off your ToDos if done", "", todoDate)
+        let toDoArray = [toDo1, toDo2, toDo3, toDo4, toDo5]
+
+        let sampleProject = Project(heading, description)
+
+        toDoArray.forEach((e) => { sampleProject.addToDo(e.getName(), e) })
+
+        return sampleProject
+    }
 
 
     const getProjectDescriptionSample = () => {
@@ -36,6 +56,7 @@ export const samples = (() => {
         todayToDosHeading,
         todayToDosSubHeading,
         weekToDosHeading,
-        weekToDosSubHeading
+        weekToDosSubHeading,
+        getSampleProject
     }
 })();
