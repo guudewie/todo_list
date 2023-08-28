@@ -302,6 +302,29 @@ export const eventListener = (() => {
         _allPageListener()
         _todayPageListener()
         _weekPageListener()
+        _vanishToDo()
+    }
+
+    const _vanishToDo = () => {
+        let checkBox = document.querySelectorAll(".material-symbols-outlined.todo.check")
+        
+        checkBox.forEach((e) => {
+            let todoContainer = e.parentNode.parentNode;
+
+            e.addEventListener("mouseenter", () => {
+                todoContainer.classList.toggle("opacity")
+                e.textContent = "check_box"
+            })
+        })
+
+        checkBox.forEach((e) => {
+            let todoContainer = e.parentNode.parentNode;
+
+            e.addEventListener("mouseleave", () => {
+                todoContainer.classList.toggle("opacity")
+                e.textContent = "check_box_outline_blank"
+            })
+        })
     }
 
     const _checkForLocalStorage = () => {
@@ -369,8 +392,8 @@ export const eventListener = (() => {
 
             _setUpProject(newProject)
             // open last project
-        let domProject = document.querySelector(`section.project:last-child`)
-        _openProject(newProject, domProject)
+            let domProject = document.querySelector(`section.project:last-child`)
+            _openProject(newProject, domProject)
         }
     }
 
@@ -383,7 +406,7 @@ export const eventListener = (() => {
             // open form via dom module and set up event listener for submitting the form
             if (_status) { 
                 domManipulation.openAddProjectForm();
-                handleProjectFormSubmit();
+                _handleProjectFormSubmit();
                 setStatus(false)
             } else return
         })
@@ -505,7 +528,7 @@ export const eventListener = (() => {
     }
 
 
-    const handleProjectFormSubmit = () => {
+    const _handleProjectFormSubmit = () => {
 
         let form = document.getElementById("new-project-form");
         let input = document.querySelector(".project-form-input");
