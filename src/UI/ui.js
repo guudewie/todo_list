@@ -175,11 +175,11 @@ export const domManipulation = (() => {
         let toDoArray = project.getAllToDos();
 
         for (let key in toDoArray) {
-            renderOneToDo(toDoArray[key])
+            renderOneToDo(toDoArray[key], project.getName())
         }
     }
 
-    const renderOneToDo = (toDo) => {
+    const renderOneToDo = (toDo, projectName) => {
         
         let mainAnker = document.querySelector("section.todo-main")
 
@@ -190,7 +190,7 @@ export const domManipulation = (() => {
 
         let html = `<div class="todo-container">
                         <div class="todo-name">${toDoName}</div>
-                        <div class="associated-project"></div>
+                        <div class="associated-project">${projectName}</div>
                         <div class="todo-icons">
                             <div class="todo-date">${toDoDate}</div>
                             <span class="material-symbols-outlined todo check">${checkIcon}</span>
