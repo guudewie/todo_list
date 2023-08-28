@@ -619,6 +619,10 @@ export const eventListener = (() => {
             // update local storage
             projectObjectStorage.updateLocalStorage()
 
+            // switch to all page
+            let allPage = document.querySelector("#all-nav")
+            allPage.click()
+
         } else return
     }
 
