@@ -307,6 +307,6 @@ hr {
     margin-right: 1rem;
 }
 
-.strikethrough {
-    text-decoration:line-through;
+.opacity {
+    opacity: .5;
 }
