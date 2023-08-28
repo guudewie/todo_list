@@ -308,8 +308,8 @@ export const eventListener = (() => {
 
         console.log(localStorage.length)
         
-        if (localStorage.length == 0) return console.log("storage empty")
-        else return _loopLocalStorage()
+        if (localStorage.length == 0) _setUpProject(samples.getSampleProject())
+        else _loopLocalStorage()
     }
 
     const _setUpProject = (newProject) => {
@@ -341,6 +341,11 @@ export const eventListener = (() => {
             projectEditIcon.addEventListener("click", () => _handleProjectEdit())
             projectDeleteIcon.addEventListener("click", () => _handleProjectDelete())
         })
+    }
+
+    const _setUpSampleProjects = () => {
+
+        _setUpProject()
     }
 
     const _loopLocalStorage = () => {
@@ -724,7 +729,7 @@ export const eventListener = (() => {
     const _isWithinCurrentWeek = (date) => {
 
         let weekEnd = nextSunday(new Date())
-        let weekStart = subDays(weekEnd, 6)
+        let weekStart = subDays(weekEnd, 7)
         let week = {
             start: weekStart,
             end: weekEnd
