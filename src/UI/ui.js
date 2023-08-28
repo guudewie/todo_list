@@ -296,10 +296,10 @@ export const eventListener = (() => {
 
     const loadPage = () => {
 
+
         _buttonAddProjectListener()
         _allPageListener()
         _todayPageListener()
-        _buttonAddToDoListener()
         _weekPageListener()
     }
 
@@ -446,6 +446,9 @@ export const eventListener = (() => {
 
             domManipulation.closeAddProjectForm()
             domManipulation.removeToDos()
+
+            // activate button to add to dos
+            _buttonAddToDoListener()
 
             // make any edit button available again
             setStatus(true)
