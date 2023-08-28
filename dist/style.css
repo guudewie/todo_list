@@ -311,3 +311,7 @@ hr {
 .opacity {
     opacity: .5;
 }
+
+.strikethrough {
+    text-decoration: line-through;
+}

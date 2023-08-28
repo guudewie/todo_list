@@ -315,18 +315,22 @@ export const eventListener = (() => {
         
         checkBox.forEach((e) => {
             let todoContainer = e.parentNode.parentNode;
+            let todoName = todoContainer.querySelector(".todo-name")
 
             e.addEventListener("mouseenter", () => {
                 todoContainer.classList.toggle("opacity")
+                todoName.classList.toggle("strikethrough")
                 e.textContent = "check_box"
             })
         })
 
         checkBox.forEach((e) => {
             let todoContainer = e.parentNode.parentNode;
+            let todoName = todoContainer.querySelector(".todo-name")
 
             e.addEventListener("mouseleave", () => {
                 todoContainer.classList.toggle("opacity")
+                todoName.classList.toggle("strikethrough")
                 e.textContent = "check_box_outline_blank"
             })
         })
