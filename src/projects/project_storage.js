@@ -13,7 +13,6 @@ export const projectObjectStorage = (() => {
 
     const addProjectObject = (key, value) => {
         _projectObjectStorage[key] = value
-        // UPDATE LOCAL STORAGE
     }
 
     function removeProjectObject(key) {

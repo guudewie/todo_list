@@ -296,11 +296,20 @@ export const eventListener = (() => {
 
     const loadPage = () => {
 
+        _handlePageLoad()
 
         _buttonAddProjectListener()
         _allPageListener()
         _todayPageListener()
         _weekPageListener()
+    }
+
+    const _handlePageLoad = () => {
+
+        console.log(localStorage.length)
+        
+        if (localStorage.length == 0) return console.log("storage empty")
+        else return console.log("storage full")
     }
 
     const _buttonAddProjectListener = () => {
