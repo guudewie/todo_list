@@ -305,11 +305,11 @@ export const eventListener = (() => {
     }
 
     const _checkForLocalStorage = () => {
-
-        console.log(localStorage.length)
         
         if (localStorage.length == 0) _setUpProject(samples.getSampleProject())
         else _loopLocalStorage()
+
+
     }
 
     const _setUpProject = (newProject) => {
@@ -325,27 +325,27 @@ export const eventListener = (() => {
         _buttonAddToDoListener()
 
         domProject.addEventListener("click", () => {
-            domManipulation.populateMainLayout(newProject.getName(), newProject.getDescription())
-            projectObjectStorage.setCurrentProject(newProject)
-            domManipulation.removeToDos()
-            domManipulation.renderToDos(newProject)
-            _toggleNavItemsStyling(domProject)
-
-            let projectEditIcon = document.querySelector(".material-symbols-outlined.project-edit")
-            let projectDeleteIcon = document.querySelector(".material-symbols-outlined.project-delete")
-
-            // make icons available if hidden
-            projectEditIcon.classList.remove("hidden")
-            projectDeleteIcon.classList.remove("hidden")
-
-            projectEditIcon.addEventListener("click", () => _handleProjectEdit())
-            projectDeleteIcon.addEventListener("click", () => _handleProjectDelete())
+            _openProject(newProject, domProject)
         })
+        _openProject(newProject, domProject)
     }
 
-    const _setUpSampleProjects = () => {
+    const _openProject = (newProject, domProject) => {
+        domManipulation.populateMainLayout(newProject.getName(), newProject.getDescription())
+        projectObjectStorage.setCurrentProject(newProject)
+        domManipulation.removeToDos()
+        domManipulation.renderToDos(newProject)
+        _toggleNavItemsStyling(domProject)
 
-        _setUpProject()
+        let projectEditIcon = document.querySelector(".material-symbols-outlined.project-edit")
+        let projectDeleteIcon = document.querySelector(".material-symbols-outlined.project-delete")
+
+        // make icons available if hidden
+        projectEditIcon.classList.remove("hidden")
+        projectDeleteIcon.classList.remove("hidden")
+
+        projectEditIcon.addEventListener("click", () => _handleProjectEdit())
+        projectDeleteIcon.addEventListener("click", () => _handleProjectDelete())
     }
 
     const _loopLocalStorage = () => {
@@ -355,8 +355,6 @@ export const eventListener = (() => {
 
             let storageProject = JSON.parse(localStorage.getItem(localStorage.key(i)));
             let storageProjectToDos = storageProject.associatedToDos
-
-            console.table(storageProject)
 
             let newProject = Project(storageProject.name, storageProject.description);
 
@@ -370,7 +368,10 @@ export const eventListener = (() => {
             }
 
             _setUpProject(newProject)
-        }        
+            // open last project
+        let domProject = document.querySelector(`section.project:last-child`)
+        _openProject(newProject, domProject)
+        }
     }
 
     const _buttonAddProjectListener = () => {
@@ -436,21 +437,31 @@ export const eventListener = (() => {
         let checkIcon = element.querySelector(".todo.check");
         let editIcon = element.querySelector(".todo.edit");
         let deleteIcon = element.querySelector(".todo.delete");
-        let toDoNameElement = element.querySelector(".todo-name")
-        let toDoDateElement = element.querySelector(".todo-date")
 
         checkIcon.addEventListener("click", () => {
-            
-            todo.toggleStatus()
-            
-            if (todo.getStatus() === true) {
-                checkIcon.textContent = "check_box"
-                toDoNameElement.classList.add("strikethrough")
-            } else {
-                checkIcon.textContent = "check_box_outline_blank"
-                toDoNameElement.classList.remove("strikethrough")
-            }
 
+            // code to implement todos that still remain visisble in the UI when marked as done
+            /////////////////////////////////////////////////////////////////////////////
+            // todo.toggleStatus()
+            // if (todo.getStatus() === true) {
+            //     checkIcon.textContent = "check_box"
+            //     toDoNameElement.classList.add("strikethrough")
+            // } else {
+            //     checkIcon.textContent = "check_box_outline_blank"
+            //     toDoNameElement.classList.remove("strikethrough")
+            // }
+            // projectObjectStorage.updateLocalStorage()
+            ///////////////////////////////////////////////////////////////////////////
+
+            // remove todo from user interface
+            deleteIcon.parentElement.parentElement.remove()
+
+            let project = projectObjectStorage.getCurrentProject()
+
+            project.removeToDo(todo.getName())
+
+            //update local storage
+            projectObjectStorage.updateLocalStorage()
         })
 
         editIcon.addEventListener("click", () => {
