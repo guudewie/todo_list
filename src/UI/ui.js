@@ -1,60 +1,68 @@
 import {
-  format, nextSunday, subDays, isWithinInterval, parseISO,
-} from 'date-fns';
-import { ToDo } from '../todos/todos.js';
-import { Project } from '../projects/projects.js';
-import { samples } from './samples.js';
-import { projectObjectStorage } from '../projects/project_storage.js';
+  format,
+  nextSunday,
+  subDays,
+  isWithinInterval,
+  parseISO,
+} from "date-fns";
+import { ToDo } from "../todos/todos.js";
+import { Project } from "../projects/projects.js";
+import { samples } from "./samples.js";
+import { projectObjectStorage } from "../projects/project_storage.js";
 
 export const domManipulation = (() => {
   const addProject = (name) => {
-    const projectDOM = document.getElementById('projects');
+    const projectDOM = document.getElementById("projects");
 
-    const html = (`<section class="project">
+    const html = `<section class="project">
                         <span class="material-symbols-outlined">Toc</span>
                         <div class="project">${name}</div>
-                    </section>`);
+                    </section>`;
 
-    projectDOM.insertAdjacentHTML('beforeend', html);
+    projectDOM.insertAdjacentHTML("beforeend", html);
   };
 
   const openAddProjectForm = () => {
-    const projectDOM = document.getElementById('projects');
+    const projectDOM = document.getElementById("projects");
 
-    const html = (`<section id="project-form-section">
+    const html = `<section id="project-form-section">
                         <span class="material-symbols-outlined">toc</span>
                         <form id="new-project-form">
                             <input class="project-form-input" type="text">
                         </form>
-                     </section>`);
+                     </section>`;
 
-    projectDOM.insertAdjacentHTML('beforeend', html);
+    projectDOM.insertAdjacentHTML("beforeend", html);
   };
 
   const closeAddProjectForm = () => {
-    const addProjectFormDom = document.querySelector('section#project-form-section');
+    const addProjectFormDom = document.querySelector(
+      "section#project-form-section",
+    );
     addProjectFormDom.remove();
   };
 
   const openEditProjectForm = (projectObject) => {
-    const titleDescriptionContainer = document.querySelector('.container.title-description');
-    const projectTitleDom = document.querySelector('.heading.main');
-    const projectDescriptionDom = document.querySelector('.sub-heading.main');
+    const titleDescriptionContainer = document.querySelector(
+      ".container.title-description",
+    );
+    const projectTitleDom = document.querySelector(".heading.main");
+    const projectDescriptionDom = document.querySelector(".sub-heading.main");
 
     projectTitleDom.remove();
     projectDescriptionDom.remove();
 
-    const html = (`<form id="edit-project-form">
+    const html = `<form id="edit-project-form">
                         <input class="heading main form" value="${projectObject.getName()}" type="text">
                         <input class="sub-heading main form" placeholder="${projectObject.getDescription()}" type="text">
                         <input type="submit">
-                    </form>`);
+                    </form>`;
 
-    titleDescriptionContainer.insertAdjacentHTML('beforebegin', html);
+    titleDescriptionContainer.insertAdjacentHTML("beforebegin", html);
   };
 
   const openAddToDoForm = () => {
-    const mainAnker = document.querySelector('section.todo-main');
+    const mainAnker = document.querySelector("section.todo-main");
 
     const html = `<div class="todo-container" id="add-todo-form-container">
                         <form id="add-todo-form">
@@ -70,11 +78,11 @@ export const domManipulation = (() => {
                         </form>
                     </div>`;
 
-    mainAnker.insertAdjacentHTML('beforeend', html);
+    mainAnker.insertAdjacentHTML("beforeend", html);
   };
 
   const closeAddToDoForm = () => {
-    const addTodoFormDom = document.getElementById('add-todo-form-container');
+    const addTodoFormDom = document.getElementById("add-todo-form-container");
     addTodoFormDom.remove();
   };
 
@@ -94,14 +102,18 @@ export const domManipulation = (() => {
                         </form>
                     </div>`;
 
-    respectiveToDoElement.insertAdjacentHTML('afterend', html);
+    respectiveToDoElement.insertAdjacentHTML("afterend", html);
     respectiveToDoElement.remove();
   };
 
   const closeEditToDoForm = (toDoObject) => {
-    const formContainer = document.getElementById('edit-todo-form-container');
-    const checkIcon = toDoObject.getStatus() ? 'check_box' : 'check_box_outline_blank';
-    const formattedDate = toDoObject.getDueDate() ? format(parseISO(toDoObject.getDueDate()), 'dd/MM/yyyy') : '';
+    const formContainer = document.getElementById("edit-todo-form-container");
+    const checkIcon = toDoObject.getStatus()
+      ? "check_box"
+      : "check_box_outline_blank";
+    const formattedDate = toDoObject.getDueDate()
+      ? format(parseISO(toDoObject.getDueDate()), "dd/MM/yyyy")
+      : "";
 
     const html = `<div class="todo-container">
                         <div class="todo-name">${toDoObject.getName()}</div>
@@ -115,11 +127,13 @@ export const domManipulation = (() => {
                     </div>`;
 
     // insert todo card
-    formContainer.insertAdjacentHTML('afterend', html);
+    formContainer.insertAdjacentHTML("afterend", html);
 
     // add event listener
 
-    const todoContainer = document.querySelector('#edit-todo-form-container+.todo-container');
+    const todoContainer = document.querySelector(
+      "#edit-todo-form-container+.todo-container",
+    );
     eventListener.toDoListener(todoContainer, toDoObject);
 
     // close form
@@ -127,7 +141,7 @@ export const domManipulation = (() => {
   };
 
   const closeEditProjectForm = () => {
-    const editProjectFormDom = document.querySelector('form#edit-project-form');
+    const editProjectFormDom = document.querySelector("form#edit-project-form");
     editProjectFormDom.remove();
   };
 
@@ -136,21 +150,21 @@ export const domManipulation = (() => {
   };
 
   const populateMainLayout = (title, subTitle) => {
-    const domTitle = document.querySelector('.heading.main');
-    const domSubTitle = document.querySelector('.sub-heading.main');
+    const domTitle = document.querySelector(".heading.main");
+    const domSubTitle = document.querySelector(".sub-heading.main");
 
     domTitle.textContent = title;
     domSubTitle.textContent = subTitle;
   };
 
   const addMainLayout = () => {
-    const mainAnker = document.querySelector('div.container-main');
+    const mainAnker = document.querySelector("div.container-main");
     const html = `<div class="container title-description">
                         <div class="heading main"></div>
                         <div class="sub-heading main"></div>
                     </div>`;
 
-    mainAnker.insertAdjacentHTML('afterbegin', html);
+    mainAnker.insertAdjacentHTML("afterbegin", html);
   };
 
   const renderToDos = (project) => {
@@ -162,12 +176,14 @@ export const domManipulation = (() => {
   };
 
   const renderOneToDo = (toDo, projectName) => {
-    const mainAnker = document.querySelector('section.todo-main');
+    const mainAnker = document.querySelector("section.todo-main");
 
     const toDoName = toDo.getName();
-    const toDoDate = toDo.getDueDate() ? format(parseISO(toDo.getDueDate()), 'dd/MM/yyyy') : '';
+    const toDoDate = toDo.getDueDate()
+      ? format(parseISO(toDo.getDueDate()), "dd/MM/yyyy")
+      : "";
     const toDoCheck = toDo.getStatus();
-    const checkIcon = toDoCheck ? 'check_box' : 'check_box_outline_blank';
+    const checkIcon = toDoCheck ? "check_box" : "check_box_outline_blank";
 
     const html = `<div class="todo-container">
                         <div class="todo-name">${toDoName}</div>
@@ -180,15 +196,15 @@ export const domManipulation = (() => {
                         </div>
                     </div>`;
 
-    mainAnker.insertAdjacentHTML('beforeend', html);
+    mainAnker.insertAdjacentHTML("beforeend", html);
 
     // add event listener
-    const latestToDo = document.querySelector('.todo-container:last-child');
+    const latestToDo = document.querySelector(".todo-container:last-child");
     eventListener.toDoListener(latestToDo, toDo);
   };
 
   const removeToDos = () => {
-    const toDosDom = document.querySelectorAll('.todo-container');
+    const toDosDom = document.querySelectorAll(".todo-container");
 
     toDosDom.forEach((element) => {
       element.remove();
@@ -196,23 +212,27 @@ export const domManipulation = (() => {
   };
 
   const openNavPage = (page) => {
-    const projectEditIcon = document.querySelector('.material-symbols-outlined.project-edit');
-    const projectDeleteIcon = document.querySelector('.material-symbols-outlined.project-delete');
-    const todoAddIcon = document.querySelector('div#add-to-do');
+    const projectEditIcon = document.querySelector(
+      ".material-symbols-outlined.project-edit",
+    );
+    const projectDeleteIcon = document.querySelector(
+      ".material-symbols-outlined.project-delete",
+    );
+    const todoAddIcon = document.querySelector("div#add-to-do");
 
     let heading;
     let subHeading;
 
     switch (page) {
-      case 'all':
+      case "all":
         heading = samples.allToDosHeading;
         subHeading = samples.allToDosSubHeading;
         break;
-      case 'today':
+      case "today":
         heading = samples.todayToDosHeading;
         subHeading = samples.todayToDosSubHeading();
         break;
-      case 'week':
+      case "week":
         heading = samples.weekToDosHeading;
         subHeading = samples.weekToDosSubHeading();
     }
@@ -224,14 +244,17 @@ export const domManipulation = (() => {
     projectEditIcon.parentNode.replaceChild(editIconClone, projectEditIcon);
 
     const deleteIconClone = projectDeleteIcon.cloneNode(true);
-    projectDeleteIcon.parentNode.replaceChild(deleteIconClone, projectDeleteIcon);
+    projectDeleteIcon.parentNode.replaceChild(
+      deleteIconClone,
+      projectDeleteIcon,
+    );
 
     const addIconClone = todoAddIcon.cloneNode(true);
     todoAddIcon.parentNode.replaceChild(addIconClone, todoAddIcon);
 
-    addIconClone.classList.add('hidden');
-    editIconClone.classList.add('hidden');
-    deleteIconClone.classList.add('hidden');
+    addIconClone.classList.add("hidden");
+    editIconClone.classList.add("hidden");
+    deleteIconClone.classList.add("hidden");
   };
 
   return {
@@ -272,27 +295,29 @@ export const eventListener = (() => {
   };
 
   const _vanishToDo = () => {
-    const checkBox = document.querySelectorAll('.material-symbols-outlined.todo.check');
+    const checkBox = document.querySelectorAll(
+      ".material-symbols-outlined.todo.check",
+    );
 
     checkBox.forEach((e) => {
       const todoContainer = e.parentNode.parentNode;
-      const todoName = todoContainer.querySelector('.todo-name');
+      const todoName = todoContainer.querySelector(".todo-name");
 
-      e.addEventListener('mouseenter', () => {
-        todoContainer.classList.toggle('opacity');
-        todoName.classList.toggle('strikethrough');
-        e.textContent = 'check_box';
+      e.addEventListener("mouseenter", () => {
+        todoContainer.classList.toggle("opacity");
+        todoName.classList.toggle("strikethrough");
+        e.textContent = "check_box";
       });
     });
 
     checkBox.forEach((e) => {
       const todoContainer = e.parentNode.parentNode;
-      const todoName = todoContainer.querySelector('.todo-name');
+      const todoName = todoContainer.querySelector(".todo-name");
 
-      e.addEventListener('mouseleave', () => {
-        todoContainer.classList.toggle('opacity');
-        todoName.classList.toggle('strikethrough');
-        e.textContent = 'check_box_outline_blank';
+      e.addEventListener("mouseleave", () => {
+        todoContainer.classList.toggle("opacity");
+        todoName.classList.toggle("strikethrough");
+        e.textContent = "check_box_outline_blank";
       });
     });
   };
@@ -308,46 +333,58 @@ export const eventListener = (() => {
     projectObjectStorage.setCurrentProject(newProject);
 
     domManipulation.addProject(newProject.getName());
-    const domProject = document.querySelector('section.project:last-child');
+    const domProject = document.querySelector("section.project:last-child");
     newProject.setProjectDomElement(domProject);
 
     // activate button to add to dos
     _buttonAddToDoListener();
 
-    domProject.addEventListener('click', () => {
+    domProject.addEventListener("click", () => {
       _openProject(newProject, domProject);
     });
     _openProject(newProject, domProject);
   };
 
   const _openProject = (newProject, domProject) => {
-    domManipulation.populateMainLayout(newProject.getName(), newProject.getDescription());
+    domManipulation.populateMainLayout(
+      newProject.getName(),
+      newProject.getDescription(),
+    );
     projectObjectStorage.setCurrentProject(newProject);
     domManipulation.removeToDos();
     domManipulation.renderToDos(newProject);
     _toggleNavItemsStyling(domProject);
 
-    const projectEditIcon = document.querySelector('.material-symbols-outlined.project-edit');
-    const projectDeleteIcon = document.querySelector('.material-symbols-outlined.project-delete');
-    const todoAddIcon = document.querySelector('div#add-to-do');
+    const projectEditIcon = document.querySelector(
+      ".material-symbols-outlined.project-edit",
+    );
+    const projectDeleteIcon = document.querySelector(
+      ".material-symbols-outlined.project-delete",
+    );
+    const todoAddIcon = document.querySelector("div#add-to-do");
 
     // make icons available if hidden
-    projectEditIcon.classList.remove('hidden');
-    projectDeleteIcon.classList.remove('hidden');
-    todoAddIcon.classList.remove('hidden');
+    projectEditIcon.classList.remove("hidden");
+    projectDeleteIcon.classList.remove("hidden");
+    todoAddIcon.classList.remove("hidden");
 
-    projectEditIcon.addEventListener('click', () => _handleProjectEdit());
-    projectDeleteIcon.addEventListener('click', () => _handleProjectDelete());
-    todoAddIcon.addEventListener('click', () => _buttonAddToDoListener());
+    projectEditIcon.addEventListener("click", () => _handleProjectEdit());
+    projectDeleteIcon.addEventListener("click", () => _handleProjectDelete());
+    todoAddIcon.addEventListener("click", () => _buttonAddToDoListener());
   };
 
   const _loopLocalStorage = () => {
     // loop through objects in local storage and create project objects
     for (let i = 0; i < localStorage.length; i++) {
-      const storageProject = JSON.parse(localStorage.getItem(localStorage.key(i)));
+      const storageProject = JSON.parse(
+        localStorage.getItem(localStorage.key(i)),
+      );
       const storageProjectToDos = storageProject.associatedToDos;
 
-      const newProject = Project(storageProject.name, storageProject.description);
+      const newProject = Project(
+        storageProject.name,
+        storageProject.description,
+      );
 
       // loop through todo objects in local storage, create todo object and link to associated project object
       for (const key in storageProjectToDos) {
@@ -362,15 +399,15 @@ export const eventListener = (() => {
 
       _setUpProject(newProject);
       // open last project
-      const domProject = document.querySelector('section.project:last-child');
+      const domProject = document.querySelector("section.project:last-child");
       _openProject(newProject, domProject);
     }
   };
 
   const _buttonAddProjectListener = () => {
-    const addProjectElement = document.getElementById('add-project');
+    const addProjectElement = document.getElementById("add-project");
 
-    addProjectElement.addEventListener('click', () => {
+    addProjectElement.addEventListener("click", () => {
       // open form via dom module and set up event listener for submitting the form
       if (_status) {
         domManipulation.openAddProjectForm();
@@ -381,9 +418,9 @@ export const eventListener = (() => {
   };
 
   const _buttonAddToDoListener = () => {
-    const addToDoElement = document.getElementById('add-to-do');
+    const addToDoElement = document.getElementById("add-to-do");
 
-    addToDoElement.addEventListener('click', () => {
+    addToDoElement.addEventListener("click", () => {
       // open form via dom module and set up event listener for submitting the form
       if (_status) {
         domManipulation.openAddToDoForm();
@@ -394,16 +431,16 @@ export const eventListener = (() => {
   };
 
   const handleToDoFormSubmit = () => {
-    const form = document.getElementById('add-todo-form-container');
-    const todoName = document.querySelector('input.todo-name');
-    const todoDate = document.querySelector('input.todo-date');
+    const form = document.getElementById("add-todo-form-container");
+    const todoName = document.querySelector("input.todo-name");
+    const todoDate = document.querySelector("input.todo-date");
 
-    form.addEventListener('submit', (e) => {
+    form.addEventListener("submit", (e) => {
       e.preventDefault();
       domManipulation.closeAddToDoForm();
 
       // create ToDo object
-      const newToDo = ToDo(todoName.value, '', todoDate.value, false);
+      const newToDo = ToDo(todoName.value, "", todoDate.value, false);
 
       // add todo to assosiated project
       const project = projectObjectStorage.getCurrentProject();
@@ -419,11 +456,11 @@ export const eventListener = (() => {
   };
 
   const toDoListener = (element, todo) => {
-    const checkIcon = element.querySelector('.todo.check');
-    const editIcon = element.querySelector('.todo.edit');
-    const deleteIcon = element.querySelector('.todo.delete');
+    const checkIcon = element.querySelector(".todo.check");
+    const editIcon = element.querySelector(".todo.edit");
+    const deleteIcon = element.querySelector(".todo.delete");
 
-    checkIcon.addEventListener('click', () => {
+    checkIcon.addEventListener("click", () => {
       // code to implement todos that still remain visisble in the UI when marked as done
       /// //////////////////////////////////////////////////////////////////////////
       // todo.toggleStatus()
@@ -448,7 +485,7 @@ export const eventListener = (() => {
       projectObjectStorage.updateLocalStorage();
     });
 
-    editIcon.addEventListener('click', () => {
+    editIcon.addEventListener("click", () => {
       if (_status) {
         setStatus(false);
         domManipulation.openEditToDoForm(element, todo);
@@ -456,7 +493,7 @@ export const eventListener = (() => {
       } else return;
     });
 
-    deleteIcon.addEventListener('click', () => {
+    deleteIcon.addEventListener("click", () => {
       // remove todo from user interface
       deleteIcon.parentElement.parentElement.remove();
 
@@ -470,8 +507,8 @@ export const eventListener = (() => {
   };
 
   const _validateProjectForm = () => {
-    const form = document.getElementById('new-project-form');
-    const projectName = form.querySelector('.project-form-input');
+    const form = document.getElementById("new-project-form");
+    const projectName = form.querySelector(".project-form-input");
     const projects = projectObjectStorage.getProjectObjectArray();
     const project = projectName.value;
     let boolean = true;
@@ -486,10 +523,10 @@ export const eventListener = (() => {
   };
 
   const _handleProjectFormSubmit = () => {
-    const form = document.getElementById('new-project-form');
-    const input = document.querySelector('.project-form-input');
+    const form = document.getElementById("new-project-form");
+    const input = document.querySelector(".project-form-input");
 
-    form.addEventListener('submit', (e) => {
+    form.addEventListener("submit", (e) => {
       e.preventDefault();
 
       if (!_validateProjectForm()) {
@@ -512,53 +549,74 @@ export const eventListener = (() => {
       domManipulation.addProject(input.value);
 
       // create Project "Factory" with input value and sample description and save created Object in localstorage and _projects array
-      const newProject = Project(input.value, samples.getProjectDescriptionSample());
+      const newProject = Project(
+        input.value,
+        samples.getProjectDescriptionSample(),
+      );
       projectObjectStorage.addProjectObject(newProject.getName(), newProject);
       projectObjectStorage.setCurrentProject(newProject);
       projectObjectStorage.updateLocalStorage();
 
       // add event listener to corresponding navigation item
-      const domProject = document.querySelector('section.project:last-child');
+      const domProject = document.querySelector("section.project:last-child");
       newProject.setProjectDomElement(domProject);
 
       _toggleNavItemsStyling(domProject); // highlight project in navigation
 
-      domProject.addEventListener('click', () => {
-        domManipulation.populateMainLayout(newProject.getName(), newProject.getDescription());
+      domProject.addEventListener("click", () => {
+        domManipulation.populateMainLayout(
+          newProject.getName(),
+          newProject.getDescription(),
+        );
         projectObjectStorage.setCurrentProject(newProject);
         domManipulation.removeToDos();
         domManipulation.renderToDos(newProject);
         _toggleNavItemsStyling(domProject);
 
-        const projectEditIcon = document.querySelector('.material-symbols-outlined.project-edit');
-        const projectDeleteIcon = document.querySelector('.material-symbols-outlined.project-delete');
-        const addTodoIcon = document.querySelector('div#add-to-do');
+        const projectEditIcon = document.querySelector(
+          ".material-symbols-outlined.project-edit",
+        );
+        const projectDeleteIcon = document.querySelector(
+          ".material-symbols-outlined.project-delete",
+        );
+        const addTodoIcon = document.querySelector("div#add-to-do");
 
         // make icons available if hidden
-        projectEditIcon.classList.remove('hidden');
-        projectDeleteIcon.classList.remove('hidden');
-        addTodoIcon.classList.remove('hidden');
+        projectEditIcon.classList.remove("hidden");
+        projectDeleteIcon.classList.remove("hidden");
+        addTodoIcon.classList.remove("hidden");
 
-        projectEditIcon.addEventListener('click', () => _handleProjectEdit());
-        projectDeleteIcon.addEventListener('click', () => _handleProjectDelete());
-        todoAddIcon.addEventListener('click', () => _buttonAddToDoListener());
+        projectEditIcon.addEventListener("click", () => _handleProjectEdit());
+        projectDeleteIcon.addEventListener("click", () =>
+          _handleProjectDelete(),
+        );
+        todoAddIcon.addEventListener("click", () => _buttonAddToDoListener());
       });
 
       // poulate main section with corresponding project information
-      domManipulation.populateMainLayout(newProject.getName(), newProject.getDescription());
+      domManipulation.populateMainLayout(
+        newProject.getName(),
+        newProject.getDescription(),
+      );
 
       // add event listeners to icons to delete and change a project
-      const projectEditIcon = document.querySelector('.material-symbols-outlined.project-edit');
-      const projectDeleteIcon = document.querySelector('.material-symbols-outlined.project-delete');
+      const projectEditIcon = document.querySelector(
+        ".material-symbols-outlined.project-edit",
+      );
+      const projectDeleteIcon = document.querySelector(
+        ".material-symbols-outlined.project-delete",
+      );
 
-      projectEditIcon.addEventListener('click', () => _handleProjectEdit());
-      projectDeleteIcon.addEventListener('click', () => _handleProjectDelete());
+      projectEditIcon.addEventListener("click", () => _handleProjectEdit());
+      projectDeleteIcon.addEventListener("click", () => _handleProjectDelete());
     };
   };
 
   const _handleProjectEdit = () => {
     if (_status) {
-      domManipulation.openEditProjectForm(projectObjectStorage.getCurrentProject());
+      domManipulation.openEditProjectForm(
+        projectObjectStorage.getCurrentProject(),
+      );
       setStatus(false);
       handleProjectEditFormSubmit(projectObjectStorage.getCurrentProject());
     } else return;
@@ -567,7 +625,9 @@ export const eventListener = (() => {
   const _handleProjectDelete = () => {
     if (_status) {
       // remove project object from storage
-      projectObjectStorage.removeProjectObject(projectObjectStorage.getCurrentProject().getName());
+      projectObjectStorage.removeProjectObject(
+        projectObjectStorage.getCurrentProject().getName(),
+      );
 
       // remove project navigation element
       projectObjectStorage.getCurrentProject().getProjectDomElement().remove();
@@ -576,18 +636,18 @@ export const eventListener = (() => {
       projectObjectStorage.updateLocalStorage();
 
       // switch to all page
-      const allPage = document.querySelector('#all-nav');
+      const allPage = document.querySelector("#all-nav");
       allPage.click();
     } else return;
   };
 
   const handleProjectEditFormSubmit = (projectObject) => {
-    const form = document.getElementById('edit-project-form');
-    const titleInput = document.querySelector('.heading.main.form');
-    const subTitleInput = document.querySelector('.sub-heading.main.form');
+    const form = document.getElementById("edit-project-form");
+    const titleInput = document.querySelector(".heading.main.form");
+    const subTitleInput = document.querySelector(".sub-heading.main.form");
 
     // change project information based on form input
-    form.addEventListener('submit', (e) => {
+    form.addEventListener("submit", (e) => {
       e.preventDefault();
 
       // make any edit button available again
@@ -608,11 +668,11 @@ export const eventListener = (() => {
   };
 
   const _handleEditToDoFormSubmit = (toDoObject) => {
-    const form = document.getElementById('edit-todo-form');
-    const nameInput = form.querySelector('input.todo-name');
-    const dateInput = form.querySelector('input.todo-date');
+    const form = document.getElementById("edit-todo-form");
+    const nameInput = form.querySelector("input.todo-name");
+    const dateInput = form.querySelector("input.todo-date");
 
-    form.addEventListener('submit', (e) => {
+    form.addEventListener("submit", (e) => {
       e.preventDefault();
 
       // make any edit button available again
@@ -631,12 +691,12 @@ export const eventListener = (() => {
   };
 
   const _allPageListener = () => {
-    const allPageButton = document.getElementById('all-nav');
+    const allPageButton = document.getElementById("all-nav");
 
-    allPageButton.addEventListener('click', () => {
+    allPageButton.addEventListener("click", () => {
       _toggleNavItemsStyling(allPageButton);
 
-      domManipulation.openNavPage('all');
+      domManipulation.openNavPage("all");
       domManipulation.removeToDos(projectObjectStorage.getCurrentProject());
 
       const projects = projectObjectStorage.getProjectObjectArray();
@@ -648,12 +708,12 @@ export const eventListener = (() => {
   };
 
   const _todayPageListener = () => {
-    const todayPageButton = document.getElementById('today-nav');
+    const todayPageButton = document.getElementById("today-nav");
 
-    todayPageButton.addEventListener('click', () => {
+    todayPageButton.addEventListener("click", () => {
       _toggleNavItemsStyling(todayPageButton);
 
-      domManipulation.openNavPage('today');
+      domManipulation.openNavPage("today");
       domManipulation.removeToDos(projectObjectStorage.getCurrentProject());
 
       const projects = projectObjectStorage.getProjectObjectArray();
@@ -674,12 +734,12 @@ export const eventListener = (() => {
   };
 
   const _weekPageListener = () => {
-    const weekPageButton = document.getElementById('week-nav');
+    const weekPageButton = document.getElementById("week-nav");
 
-    weekPageButton.addEventListener('click', () => {
+    weekPageButton.addEventListener("click", () => {
       _toggleNavItemsStyling(weekPageButton);
 
-      domManipulation.openNavPage('week');
+      domManipulation.openNavPage("week");
       domManipulation.removeToDos(projectObjectStorage.getCurrentProject());
 
       const projects = projectObjectStorage.getProjectObjectArray();
@@ -698,7 +758,7 @@ export const eventListener = (() => {
     });
   };
 
-  const _getFormattedDate = (date) => format(date, 'yyyy-MM-dd');
+  const _getFormattedDate = (date) => format(date, "yyyy-MM-dd");
 
   const _isWithinCurrentWeek = (date) => {
     const weekEnd = nextSunday(new Date());
@@ -715,11 +775,11 @@ export const eventListener = (() => {
     // array with all navigation elements
     const navElements = [];
 
-    const allNavItem = document.querySelector('#all-nav');
+    const allNavItem = document.querySelector("#all-nav");
     navElements.push(allNavItem);
-    const todayNavItem = document.querySelector('#today-nav');
+    const todayNavItem = document.querySelector("#today-nav");
     navElements.push(todayNavItem);
-    const weekNavItem = document.querySelector('#week-nav');
+    const weekNavItem = document.querySelector("#week-nav");
     navElements.push(weekNavItem);
 
     const projects = projectObjectStorage.getProjectObjectArray();
@@ -729,10 +789,10 @@ export const eventListener = (() => {
     }
 
     navElements.forEach((element) => {
-      element.classList.remove('nav-active');
+      element.classList.remove("nav-active");
     });
 
-    clickedElement.classList.add('nav-active');
+    clickedElement.classList.add("nav-active");
   };
 
   return {

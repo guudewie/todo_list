@@ -4,142 +4,137 @@
 }
 */
 
+:root {
+  --color-primary: #44504c;
+  --color-secondary: #d0d6d7;
+  --color-accent: #6576686f;
+  --color-background: #ffffff;
+  --color-text-dark: #030202;
+  --color-text-light: #ffffff;
 
-:root{
-    --color-primary: #44504c;
-    --color-secondary: #d0d6d7;
-    --color-accent: #6576686f;
-    --color-background: #ffffff;
-    --color-text-dark: #030202;
-    --color-text-light: #ffffff;
-
-    --font-roboto: 'Roboto', sans-serif;
+  --font-roboto: "Roboto", sans-serif;
 }
 
 body {
-    margin: 0px;
-    padding: 0px;
-    height: 100vh;
-    font-family: 'Roboto', sans-serif;
-    
-    display: grid;
-    grid-template-columns: 1.5fr 5fr;
-    grid-template-rows: 80px 8fr;
+  margin: 0px;
+  padding: 0px;
+  height: 100vh;
+  font-family: "Roboto", sans-serif;
+
+  display: grid;
+  grid-template-columns: 1.5fr 5fr;
+  grid-template-rows: 80px 8fr;
 }
 
 .material-symbols-outlined {
-    cursor: pointer;
+  cursor: pointer;
   font-variation-settings:
-  'FILL' 0,
-  'wght' 600,
-  'GRAD' 0,
-  'opsz' 48
+    "FILL" 0,
+    "wght" 600,
+    "GRAD" 0,
+    "opsz" 48;
 }
 
 .material-symbols-outlined.plus {
-    font-variation-settings:
-    'wght' 400,
-  }
-
+  font-variation-settings: "wght" 400;
+}
 
 /****************** HEADER ******************/
 
 .header {
-    background-color: var(--color-primary);
-    padding: 0vw 4vw;
-    font-weight: 700;
+  background-color: var(--color-primary);
+  padding: 0vw 4vw;
+  font-weight: 700;
 
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    grid-row: 1 / 2;
-    grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  grid-row: 1 / 2;
+  grid-column: 1 / -1;
 }
 
 .header-heading {
-    color: var(--color-text-light);
-    font-size: 2rem;
+  color: var(--color-text-light);
+  font-size: 2rem;
 }
 
 .github-container {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 .github-icon {
-    transition: transform 0.4s ease-in-out;
-}
-  
-.github-icon:hover {
-    transform: rotate(360deg) scale(1.2);
+  transition: transform 0.4s ease-in-out;
 }
 
+.github-icon:hover {
+  transform: rotate(360deg) scale(1.2);
+}
 
 /****************** SIDEBAR ******************/
 
 .sidebar {
-    background-color: var(--color-secondary);
-    padding: 4vw 4vw;
-    color: var(--color-text-dark);
+  background-color: var(--color-secondary);
+  padding: 4vw 4vw;
+  color: var(--color-text-dark);
 
-    grid-row: 2 / -1;
-    grid-column: 1 / 2;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
+  grid-row: 2 / -1;
+  grid-column: 1 / 2;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
 .sidebar-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .heading {
-    font-weight: 800;
-    font-size: 1.4rem;
+  font-weight: 800;
+  font-size: 1.4rem;
 }
 
 .nav-todos,
 #projects {
-    display: flex;
-    flex-direction: column;
-    gap: .6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
 }
 
 nav {
-    padding-left: .7rem;
+  padding-left: 0.7rem;
 }
 
 section {
-    display: flex;
-    flex-direction: row;
-    gap: 1vw;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 1vw;
+  align-items: center;
 }
 
-#add-project{
-    color: var(--color-text-dark);
-    margin-top: 8px;
+#add-project {
+  color: var(--color-text-dark);
+  margin-top: 8px;
 
-    display: flex;
-    flex-direction: row;
-    gap: .5rem;
-    align-items: center;
-    justify-content: flex-end;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: flex-end;
 }
 
-
-#add-project>* {
-    font-size: .9rem;
-    cursor: pointer;
+#add-project > * {
+  font-size: 0.9rem;
+  cursor: pointer;
 }
 
 #today-nav,
 #week-nav,
 #all-nav,
 section.project {
-    padding: .3rem 1rem;
+  padding: 0.3rem 1rem;
 }
 
 #today-nav:hover,
@@ -147,171 +142,167 @@ section.project {
 #all-nav:hover,
 section.project:hover,
 .nav-active {
-    background-color: var(--color-text-light);
-    border-radius: .5rem;
-    margin-right: -10rem;
+  background-color: var(--color-text-light);
+  border-radius: 0.5rem;
+  margin-right: -10rem;
 }
-
 
 /****************** FORMS ******************/
 
 .project-form-input {
-    border: none;
-    border-radius: .3rem;
-    padding: .2rem;
-    margin-left: -.2rem;
-    font-size: 1rem;
-    color: var(--color-text-dark);
-    background-color: var(--color-background);
+  border: none;
+  border-radius: 0.3rem;
+  padding: 0.2rem;
+  margin-left: -0.2rem;
+  font-size: 1rem;
+  color: var(--color-text-dark);
+  background-color: var(--color-background);
 }
 
-#edit-project-form{
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    gap: 1rem;
-    flex: 1;
+#edit-project-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 1rem;
+  flex: 1;
 }
 
 input.heading.main.form {
-    width: fit-content;
-    padding:  .3rem;
+  width: fit-content;
+  padding: 0.3rem;
 }
 
 textarea.sub-heading.main.form {
-    height: 2rem;
-    font-family: var(--font-roboto);
-    padding: .3rem;
+  height: 2rem;
+  font-family: var(--font-roboto);
+  padding: 0.3rem;
 }
 
 input[type="submit"] {
-    height: 0px;
-    width: 0px;
-    border: none;
-    background-color: none;
-    opacity: 0;
-    margin: -.5rem;
+  height: 0px;
+  width: 0px;
+  border: none;
+  background-color: none;
+  opacity: 0;
+  margin: -0.5rem;
 }
 
-
 form {
-    width: 100%;
+  width: 100%;
 
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
 
 /****************** INTERFACE ******************/
 
 #interface {
-    background-color: var(--color-background);
-    padding: 4vw 4vw;
+  background-color: var(--color-background);
+  padding: 4vw 4vw;
 
-    grid-row: 2 / -1;
-    grid-column: 2 / -1;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+  grid-row: 2 / -1;
+  grid-column: 2 / -1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 hr {
-    border-top: 1.8px solid var(--color-primary);
-    width: 100%;
+  border-top: 1.8px solid var(--color-primary);
+  width: 100%;
 }
 
 .container.title-description {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .sub-heading {
-    font-weight: 300;
+  font-weight: 300;
 }
 
 .container-main {
-    display: flex;
-    align-items: end;
-    gap: 1rem;
-    justify-content: space-between;
+  display: flex;
+  align-items: end;
+  gap: 1rem;
+  justify-content: space-between;
 }
 
 .edit-project-icons {
-    display: flex;
-    gap: .5rem;
-    margin-right: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  margin-right: 1rem;
 }
 
 .todo-main {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 #add-to-do {
-    padding-right: 1rem;
+  padding-right: 1rem;
 
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: .5rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
 }
 
 .heading-add-project {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .hidden {
-    cursor: default;
-    opacity: 0;
-    pointer-events: none;
+  cursor: default;
+  opacity: 0;
+  pointer-events: none;
 }
-
 
 /****************** TO DO ******************/
 
 .todo-container {
-    background-color: var(--color-accent);
-    padding: .8rem 1rem;
-    border-radius: .5rem;
-    margin-bottom: .6rem;
+  background-color: var(--color-accent);
+  padding: 0.8rem 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 0.6rem;
 
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: 97%;
-
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 97%;
 }
 
 .todo-date {
-    margin-right: 3rem;
+  margin-right: 3rem;
 }
 
 .todo-icons {
-    margin-left: auto;
+  margin-left: auto;
 
-    display: flex;
-    align-items: center;
-    gap: .5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .todo-name {
-    margin-right: 1rem;
+  margin-right: 1rem;
 }
 
 .associated-project {
-    font-size: .9rem;
-    font-weight: 100;
+  font-size: 0.9rem;
+  font-weight: 100;
 }
 
-.container-main>.add-project {
-    margin-top: 1.4rem;
-    margin-right: 1rem;
+.container-main > .add-project {
+  margin-top: 1.4rem;
+  margin-right: 1rem;
 }
 
 .opacity {
-    opacity: .5;
+  opacity: 0.5;
 }
 
 .strikethrough {
-    text-decoration: line-through;
+  text-decoration: line-through;
 }

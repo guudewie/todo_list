@@ -1,3 +1,3 @@
-import { eventListener } from './UI/ui.js';
+import { eventListener } from "./UI/ui";
 
-window.addEventListener("load", () => eventListener.loadPage())
+window.addEventListener("load", () => eventListener.loadPage());
