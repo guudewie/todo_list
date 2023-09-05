@@ -5,10 +5,10 @@ import {
   isWithinInterval,
   parseISO,
 } from "date-fns";
-import { ToDo } from "../todos/todos.js";
-import { Project } from "../projects/projects.js";
-import { samples } from "./samples.js";
-import { projectObjectStorage } from "../projects/project_storage.js";
+import { ToDo } from "../todos/todos";
+import { Project } from "../projects/projects";
+import { samples } from "./samples";
+import { projectObjectStorage } from "../projects/project_storage";
 
 export const domManipulation = (() => {
   const addProject = (name) => {
