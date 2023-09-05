@@ -10,7 +10,7 @@ import { Project } from "../projects/projects";
 
 export const samples = (() => {
   let _projectDescriptionSample =
-    "Click the button on the right to change the description!";
+    "Change me!";
 
   let allToDosHeading = "All To Dos";
   let allToDosSubHeading = "Here you can see all your coming up to dos!";

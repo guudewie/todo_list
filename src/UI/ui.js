@@ -54,7 +54,7 @@ export const domManipulation = (() => {
 
     const html = `<form id="edit-project-form">
                         <input class="heading main form" value="${projectObject.getName()}" type="text">
-                        <input class="sub-heading main form" placeholder="${projectObject.getDescription()}" type="text">
+                        <input class="sub-heading main form" value="${projectObject.getDescription()}" type="text">
                         <input type="submit">
                     </form>`;
 
