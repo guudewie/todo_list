@@ -201,6 +201,8 @@ export const domManipulation = (() => {
     // add event listener
     const latestToDo = document.querySelector(".todo-container:last-child");
     eventListener.toDoListener(latestToDo, toDo);
+
+    eventListener.vanishToDo()
   };
 
   const removeToDos = () => {
@@ -291,10 +293,10 @@ export const eventListener = (() => {
     _allPageListener();
     _todayPageListener();
     _weekPageListener();
-    _vanishToDo();
+    vanishToDo();
   };
 
-  const _vanishToDo = () => {
+  const vanishToDo = () => {
     const checkBox = document.querySelectorAll(
       ".material-symbols-outlined.todo.check",
     );
@@ -304,8 +306,8 @@ export const eventListener = (() => {
       const todoName = todoContainer.querySelector(".todo-name");
 
       e.addEventListener("mouseenter", () => {
-        todoContainer.classList.toggle("opacity");
-        todoName.classList.toggle("strikethrough");
+        todoContainer.classList.add("opacity");
+        todoName.classList.add("strikethrough");
         e.textContent = "check_box";
       });
     });
@@ -315,8 +317,8 @@ export const eventListener = (() => {
       const todoName = todoContainer.querySelector(".todo-name");
 
       e.addEventListener("mouseleave", () => {
-        todoContainer.classList.toggle("opacity");
-        todoName.classList.toggle("strikethrough");
+        todoContainer.classList.remove("opacity");
+        todoName.classList.remove("strikethrough");
         e.textContent = "check_box_outline_blank";
       });
     });
@@ -798,5 +800,6 @@ export const eventListener = (() => {
   return {
     toDoListener,
     loadPage,
+    vanishToDo
   };
 })();
