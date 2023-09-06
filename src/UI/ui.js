@@ -605,9 +605,16 @@ export const eventListener = (() => {
       const projectEditIcon = document.querySelector(
         ".material-symbols-outlined.project-edit",
       );
+
       const projectDeleteIcon = document.querySelector(
         ".material-symbols-outlined.project-delete",
       );
+
+      const todoAddIcon = document.querySelector("#add-to-do")
+
+      projectEditIcon.classList.remove("hidden");
+      projectDeleteIcon.classList.remove("hidden");
+      todoAddIcon.classList.remove("hidden");
 
       projectEditIcon.addEventListener("click", () => _handleProjectEdit());
       projectDeleteIcon.addEventListener("click", () => _handleProjectDelete());
